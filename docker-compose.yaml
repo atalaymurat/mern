@@ -30,7 +30,6 @@ services:
     restart: unless-stopped
     build: 
       context: ./nginx
-      dockerfile: Dockerfile
     container_name: nginx
     env_file: .env
     ports:
