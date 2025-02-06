@@ -20,7 +20,7 @@ db.once('open', function () {
 // Middlewares
 // cors middleware allow cross-origin requests
 var corsOptions = {
-  origin: [process.env.CORS_URL, "http://localhost:3001"],
+  origin: ["https://express-server-s0sj.onrender.com", "http://localhost:3001"],
   optionsSuccessStatus: 200,
 }
 app.use(cors(corsOptions))

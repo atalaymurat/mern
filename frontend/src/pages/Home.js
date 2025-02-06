@@ -24,7 +24,7 @@ function Home() {
 
     if (loading) {
         return (
-            <div className="min-h-screen w-full bg-gray-500 py-4">
+            <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
                 <div className="my-2 border p-4 bg-slate-900">
                     <h1 className="text-5xl text-center font-extrabold text-white">
                         <span className="text-xs mx-4 font-light">[home]</span>
@@ -40,7 +40,7 @@ function Home() {
     }
     if (error) {
         return (
-            <div className="min-h-screen w-full bg-gray-500 py-4">
+            <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
                 <div className="my-2 border p-4 bg-slate-900">
                     <h1 className="text-5xl text-center font-extrabold text-white">
                         <span className="text-xs mx-4 font-light">[home]</span>
@@ -56,7 +56,7 @@ function Home() {
 
     if (!error && !loading) {
         return (
-            <div className="min-h-screen w-full bg-gray-500 py-4">
+            <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
                 <div className="my-2 border p-4 bg-slate-900">
                     <h1 className="text-5xl text-center font-extrabold text-white">
                         <span className="text-xs mx-4 font-light">[home]</span>
