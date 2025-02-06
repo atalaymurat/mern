@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const cors = require("cors")
 
 require('dotenv').config()
 
@@ -15,6 +16,14 @@ db.once('open', function () {
 	--------------------------------
 			`)
 })
+
+// Middlewares
+// cors middleware allow cross-origin requests
+var corsOptions = {
+  origin: [process.env.CORS_URL, "http://localhost:3001"],
+  optionsSuccessStatus: 200,
+}
+app.use(cors(corsOptions))
 
 app.use(express.json())
 

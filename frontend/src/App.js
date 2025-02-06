@@ -1,11 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "./pages/Home"
+import Layout from "./pages/Layout"
+
 
 function App() {
   return (
-    <div className="h-screen w-full flex justify-center bg-black">
-      <h1 className="text-3xl font-bold text-white">React App Online</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
