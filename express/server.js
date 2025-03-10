@@ -13,6 +13,7 @@ db.once('open', function () {
     console.log(`
 	--------------------------------
 	MongoDb connection status [OK]')
+  ${db.host}
 	--------------------------------
 			`)
 })
@@ -41,6 +42,7 @@ app.use(express.json())
 // Routes
 app.use('/', require('./routes'))
 app.use('/companies', require('./routes/companies'))
+app.use('/user', require('./routes/users'))
 
 // 404 catch all handler
 app.use((req, res, next) => {

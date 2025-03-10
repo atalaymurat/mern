@@ -51,10 +51,9 @@ function Home() {
                         OFF TECH
                     </h1>
                 </div>
-                <pre className="bg-zinc-700">
-                    {JSON.stringify(data, null, 2)}
-                </pre>
-                    {error && JSON.stringify(error)}
+
+                <div>{error && JSON.stringify(error)}</div>
+                <pre className="bg-zinc-700">{JSON.stringify(data, null, 2)}</pre>
             </div>
         )
     }
