@@ -1,8 +1,17 @@
 const passport = require('passport')
 const LocalStragety = require('passport-local').Strategy
+const JwtStrategy = require('passport-jwt').Strategy
 const User = require('./models/user.js')
 
 
+// Set the cookie token
+const cookieExtractor = req => {
+  let token = null
+  if (req && req.cookies) {
+    token = req.cookies['access_token']
+  }
+  return token
+}
 
 //Local Strategy
 passport.use(
@@ -38,6 +47,38 @@ passport.use(
         console.log('[PASS-LCL] Email is verified OK!')
         done(null, user)
       } catch (error) {
+        done(error, false)
+      }
+    }
+  )
+)
+
+// JSON WEB TOKENS STRATEGY
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: cookieExtractor,
+      secretOrKey: process.env.JWT_SECRET,
+      passReqToCallback: true,
+    },
+    async (req, payload, done) => {
+      try {
+        // Find the user token specific
+        console.log('[PASS-JWT] JWT try to Find User:')
+        const user = await User.findById(payload.sub)
+        // if user does not exist
+        if (!user) {
+        console.log('[PASS-JWT] JWT can not  Find a User:')
+          return done(null, false)
+        }
+
+        // Otherwise return user
+        req.user = user
+        console.log('[PASS-JWT] JWT Find the User:')
+
+        done(null, user)
+      } catch (error) {
+        console.log("Error Cathed JWT STG")
         done(error, false)
       }
     }

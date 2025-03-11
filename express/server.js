@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const cors = require("cors")
+const cookieParser = require('cookie-parser')
 
 require('dotenv').config()
 
@@ -19,6 +20,9 @@ db.once('open', function () {
 })
 
 // Middlewares
+app.use(express.json())
+app.use(cookieParser())
+
 // cors middleware allow cross-origin requests
 var allowedDomains = process.env.CORS_LIST
 app.use(cors({
@@ -37,16 +41,23 @@ app.use(cors({
 
 
 
-app.use(express.json())
 
 // Routes
 app.use('/', require('./routes'))
 app.use('/companies', require('./routes/companies'))
 app.use('/user', require('./routes/users'))
+app.use('/auth', require('./routes/auth'))
 
+// Route Handlers
 // 404 catch all handler
 app.use((req, res, next) => {
     res.status(404).send('404 not Found!')
+})
+// 500 error handler (middleware)
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500)
+  res.send('500 internal server error')
 })
 
 app.listen(process.env.SERVER_PORT, () => {
