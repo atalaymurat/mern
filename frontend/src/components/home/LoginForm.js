@@ -3,6 +3,7 @@ import {Formik, Form } from "formik"
 import FormikControl from "../formik/FormikControl"
 import * as Yup from "yup"
 import axios from "axios"
+import { useAuth  } from "../../context/Auth"
 
 
 const validationSchema = Yup.object({
@@ -11,6 +12,7 @@ const validationSchema = Yup.object({
 })
 
 const LoginForm = () => {
+    const { login } = useAuth()
     return (
         <React.Fragment>
             <div className="px-1 py-2 my-4 bg-gray-200 text-blue-600 border rounded-lg max-w-md mx-auto flex">
@@ -25,7 +27,10 @@ const LoginForm = () => {
                     validationSchema={validationSchema}
                     onSubmit={async (values) => {
                         const res = await axios.post('/auth/login', values, {withCredentials: true})
-                        console.log("Submit Response:", res)
+                        if (res.status === 200 ) {
+                            login()
+                            console.log("Login Succeess")
+                        }
                     }}
                 >
                     <Form>

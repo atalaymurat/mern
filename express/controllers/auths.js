@@ -34,8 +34,9 @@ module.exports = {
       const token = signToken(user)
       res.cookie('access_token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
+        secure: true, // Ensure cookies are only sent over HTTPS in production
         sameSite: 'none', // Allow cross-site cookies
+        path: "/"
       })
 
       res.status(200).json({
