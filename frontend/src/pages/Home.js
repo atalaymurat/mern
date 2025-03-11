@@ -9,7 +9,7 @@ function Home() {
     const getData = async () => {
         try {
             setLoading(true)
-            const { data } = await axios.get('/companies')
+            const { data } = await axios.get('/')
             setData(data)
             setLoading(false)
         } catch (err) {
