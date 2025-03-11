@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import LoginFrom from "../components/home/LoginForm"
 
 function Home() {
     const [loading, setLoading] = useState(false)
@@ -54,6 +55,7 @@ function Home() {
 
                 <div>{error && JSON.stringify(error)}</div>
                 <pre className="bg-zinc-700">{JSON.stringify(data, null, 2)}</pre>
+                <LoginFrom />
             </div>
         )
     }
