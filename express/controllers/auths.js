@@ -34,7 +34,7 @@ module.exports = {
       const token = signToken(user)
       res.cookie('access_token', token, {
         httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
+        secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
         sameSite: 'none', // Allow cross-site cookies
       })
 
@@ -47,6 +47,21 @@ module.exports = {
         }
       })
     })(req, res, next)
+  },
+
+  validate: async (req, res, next ) =>{
+    const token = req.cookies.access_token
+    if(!token) {
+      return res.status(401).json({ message: "Unauthorized"})
+    }
+
+    try {
+      const decoded = JWT.verify(token, process.env.JWT_SECRET)
+      res.status(200).json( { message: 'Authenticated' , user: decoded })
+
+    } catch (error) {
+      res.status(401).json({ message: "Invalid Token" })
+    }
   }
 
 }

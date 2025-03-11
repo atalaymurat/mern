@@ -3,6 +3,7 @@ import axios from 'axios'
 import LoginFrom from "../components/home/LoginForm"
 
 function Home() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState([])
@@ -18,6 +19,23 @@ function Home() {
             setData(null)
         }
     }
+
+    useEffect(() => {
+    const validateAuth = async () => {
+      try {
+        const response = await axios.get('/auth/validate', {
+          withCredentials: true,
+        });
+        setIsAuthenticated(true);
+      } catch (error) {
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    validateAuth();
+  }, []);
 
     useEffect(() => {
         getData()
@@ -55,7 +73,7 @@ function Home() {
 
                 <div>{error && JSON.stringify(error)}</div>
                 <pre className="bg-zinc-700">{JSON.stringify(data, null, 2)}</pre>
-                <LoginFrom />
+                {isAuthenticated ? <LoginFrom />  : null }
             </div>
         )
     }
