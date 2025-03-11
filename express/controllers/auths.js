@@ -32,11 +32,20 @@ module.exports = {
       }
 
       const token = signToken(user)
-      res.status(200).cookie('access_token', token, {
+      res.cookie('access_token', token, {
         httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
+        sameSite: 'none', // Allow cross-site cookies
       })
 
-      res.end()
+      res.status(200).json({
+        status: "success",
+        message: "Giriş Başarılı",
+        user: {
+          id: user._id,
+          email: user.email,
+        }
+      })
     })(req, res, next)
   }
 

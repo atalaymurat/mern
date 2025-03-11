@@ -24,7 +24,7 @@ const LoginForm = () => {
                     }}
                     validationSchema={validationSchema}
                     onSubmit={async (values) => {
-                        const res = await axios.post('/auth/login', values)
+                        const res = await axios.post('/auth/login', values, {withCredentials: true})
                         console.log("Submit Response:", res)
                     }}
                 >
