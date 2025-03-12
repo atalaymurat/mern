@@ -1,4 +1,5 @@
 // context/AuthContext.js
+// this controls the authentication logic and values
 import React, { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext()
@@ -9,7 +10,6 @@ export const AuthProvider = ({ children }) => {
 
     const login = (userData) => {
         setIsAuthenticated(true)
-        console.log("USER DATA:", userData)
         setUser(userData)
     }
 

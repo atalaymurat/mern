@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoginFrom from '../components/home/LoginForm';
-import { useAuthSWR } from '../hooks/useAuth';
+import { useAuthSWR } from '../hooks/useAuthSWR';
+import { useAuth } from "../context/Auth"
 
 function Home() {
   const [data, setData] = useState([]); // Data state
   const [dataLoading, setDataLoading] = useState(true); // Data loading state
-  const [dataError, setDataError] = useState(null); // Data error state
-  const { isAuthenticated, user, isLoading, isError, errorMessage } = useAuthSWR(); // Auth state
+  const { isLoading, isError, errorMessage } = useAuthSWR(); 
+  const { user, isAuthenticated, logout } = useAuth();
 
   // Function to fetch data
   const getData = async () => {
@@ -15,7 +16,6 @@ function Home() {
       const { data } = await axios.get('/');
       setData(data);
     } catch (err) {
-      setDataError(err.message); // Set error message
       setData(null); // Clear data on error
     } finally {
       setDataLoading(false); // Set loading to false

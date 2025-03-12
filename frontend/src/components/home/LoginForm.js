@@ -4,7 +4,7 @@ import FormikControl from "../formik/FormikControl";
 import * as Yup from "yup";
 import axios from "axios";
 import { useAuth } from "../../context/Auth";
-import { useAuthSWR } from "../../hooks/useAuth"; // Import useAuthSWR
+import { useAuthSWR } from "../../hooks/useAuthSWR"; // Import useAuthSWR
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Geçersiz Email").required("Email zorunludur"),
