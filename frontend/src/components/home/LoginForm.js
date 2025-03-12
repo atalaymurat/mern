@@ -22,7 +22,7 @@ const LoginForm = () => {
     <React.Fragment>
       <div className="px-1 py-2 my-4 bg-gray-200 text-blue-600 border rounded-lg max-w-md mx-auto flex">
         <div className="w-full px-4 py-2">
-          <div className="text-xl font-bold py-1 text-center">Login</div>
+          <div className="text-xl font-bold py-1 text-center">Kullanıcı Girişi</div>
           <Formik
             enableReinitialize={true}
             initialValues={{

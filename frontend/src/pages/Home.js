@@ -1,86 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import LoginFrom from '../components/home/LoginForm';
-import { useAuthSWR } from '../hooks/useAuthSWR';
-import { useAuth } from "../context/Auth"
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import LoginFrom from '../components/home/LoginForm'
+import { useAuthSWR } from '../hooks/useAuthSWR'
+import { useAuth } from '../context/Auth'
+import IsLoading from '../components/home/IsLoading'
+import IsError from '../components/home/IsError'
+import Header from '../components/home/Header'
+import DebugViewer from '../components/home/DebugViewer'
 
 function Home() {
-  const [data, setData] = useState([]); // Data state
-  const [dataLoading, setDataLoading] = useState(true); // Data loading state
-  const { isLoading, isError, errorMessage } = useAuthSWR(); 
-  const { user, isAuthenticated, logout } = useAuth();
+    const [data, setData] = useState([]) // Data state
+    const [dataLoading, setDataLoading] = useState(true) // Data loading state
+    const { isLoading, isError, errorMessage } = useAuthSWR()
+    const { user, isAuthenticated, logout } = useAuth()
 
-  // Function to fetch data
-  const getData = async () => {
-    try {
-      const { data } = await axios.get('/');
-      setData(data);
-    } catch (err) {
-      setData(null); // Clear data on error
-    } finally {
-      setDataLoading(false); // Set loading to false
+    // Function to fetch data
+    const getData = async () => {
+        try {
+            const { data } = await axios.get('/')
+            setData(data)
+        } catch (err) {
+            setData(null) // Clear data on error
+        } finally {
+            setDataLoading(false) // Set loading to false
+        }
     }
-  };
 
-  // Fetch data when the component mounts (only if authenticated)
-  useEffect(() => {
-    if (isAuthenticated) {
-      getData(); // Fetch data only if authenticated
-    } else {
-      setDataLoading(false); // Stop loading if not authenticated
+    // Fetch data when the component mounts (only if authenticated)
+    useEffect(() => {
+        if (isAuthenticated) {
+            getData() // Fetch data only if authenticated
+        } else {
+            setDataLoading(false) // Stop loading if not authenticated
+        }
+    }, [isAuthenticated])
+
+    // Loading state (authentication or data)
+    if (isLoading) {
+        return <IsLoading />
     }
-  }, [isAuthenticated]);
-
-  // Loading state (authentication or data)
-  if (isLoading || dataLoading) {
+    // Error state (authentication or data)
+    if (isError) {
+        return <IsError errorMessage={errorMessage} />
+    }
+    // Default render
     return (
-      <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
-        <div className="flex flex-col w-full items-center justify-center mt-10">
-          <div>Loading...</div>
+        <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
+            <Header />
+
+            {/* Show login form if not authenticated */}
+            {!isAuthenticated ? (
+                <LoginFrom />
+            ) : (
+                <DebugViewer
+                    data={data}
+                    user={user}
+                    isAuthenticated={isAuthenticated}
+                />
+            )}
         </div>
-      </div>
-    );
-  }
-
-  // Error state (authentication or data)
-  if (isError) {
-    return (
-      <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
-        <div className="flex flex-col w-full items-center justify-center mt-10">
-          <div>Error On Page Load</div>
-          <div className="flex flex-col">
-            <pre>{JSON.stringify(errorMessage, null, 2)}</pre>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Default render
-  return (
-    <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
-      <div className="my-2 border p-4 bg-slate-900">
-        <h1 className="text-5xl text-center font-extrabold text-white">
-          <span className="text-xs mx-4 font-light">[home]</span>
-          OFF TECH
-        </h1>
-      </div>
-
-      {/* Show login form if not authenticated */}
-      {!isAuthenticated ? (
-        <LoginFrom />
-      ) : (
-        <>
-          {/* Show data if authenticated */}
-          <pre className="bg-zinc-700">
-            {JSON.stringify(data, null, 2)}
-            {JSON.stringify(user, null, 2)}
-            <div className="px-4">isAuthenticated: {JSON.stringify(isAuthenticated)}</div>
-          </pre>
-        </>
-      )}
-    </div>
-  );
+    )
 }
 
-export default Home;
+export default Home
