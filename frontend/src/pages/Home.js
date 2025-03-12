@@ -1,30 +1,13 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoginFrom from '../components/home/LoginForm';
-import { useAuth } from '../context/Auth';
+import { useAuthSWR } from '../hooks/useAuth';
 
 function Home() {
-  const [loading, setLoading] = useState(true); // Single loading state
-  const [error, setError] = useState(null); // Error state
   const [data, setData] = useState([]); // Data state
-  const { isAuthenticated, login, logout } = useAuth(); // Auth context
-
-  // Function to validate the access_token cookie
-  const validateAuth = async () => {
-    try {
-      const res = await axios.get('/auth/validate', {
-        withCredentials: true, // Include cookies in the request
-      });
-
-      if (res.status === 200) {
-        login(); // Set isAuthenticated to true
-      }
-    } catch (error) {
-      console.log('User is not authenticated:', error.response?.data);
-      logout(); // Set isAuthenticated to false
-    }
-  };
+  const [dataLoading, setDataLoading] = useState(true); // Data loading state
+  const [dataError, setDataError] = useState(null); // Data error state
+  const { isAuthenticated, user, isLoading, isError, errorMessage } = useAuthSWR(); // Auth state
 
   // Function to fetch data
   const getData = async () => {
@@ -32,25 +15,24 @@ function Home() {
       const { data } = await axios.get('/');
       setData(data);
     } catch (err) {
-      setError(err.message);
-      setData(null);
+      setDataError(err.message); // Set error message
+      setData(null); // Clear data on error
     } finally {
-      setLoading(false); // Set loading to false after fetching data
+      setDataLoading(false); // Set loading to false
     }
   };
 
-  // Validate authentication and fetch data when the component mounts
+  // Fetch data when the component mounts (only if authenticated)
   useEffect(() => {
-    const initialize = async () => {
-      await validateAuth(); // Validate authentication first
-      await getData(); // Fetch data after authentication is validated
-    };
+    if (isAuthenticated) {
+      getData(); // Fetch data only if authenticated
+    } else {
+      setDataLoading(false); // Stop loading if not authenticated
+    }
+  }, [isAuthenticated]);
 
-    initialize();
-  }, []);
-
-  // Loading state
-  if (loading) {
+  // Loading state (authentication or data)
+  if (isLoading || dataLoading) {
     return (
       <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
         <div className="flex flex-col w-full items-center justify-center mt-10">
@@ -60,13 +42,15 @@ function Home() {
     );
   }
 
-  // Error state
-  if (error) {
+  // Error state (authentication or data)
+  if (isError) {
     return (
       <div className="min-h-screen w-full bg-zinc-900 py-4 text-white">
         <div className="flex flex-col w-full items-center justify-center mt-10">
           <div>Error On Page Load</div>
-          <div>{JSON.stringify(error)}</div>
+          <div className="flex flex-col">
+            <pre>{JSON.stringify(errorMessage, null, 2)}</pre>
+          </div>
         </div>
       </div>
     );
@@ -82,14 +66,19 @@ function Home() {
         </h1>
       </div>
 
-      <div>{error && JSON.stringify(error)}</div>
-
-      <pre className="bg-zinc-700">
-        {JSON.stringify(data, null, 2)}
-        <div className='px-4'>isAuthenticated: {JSON.stringify(isAuthenticated)}</div>
-      </pre>
-
-      {!isAuthenticated && <LoginFrom />}
+      {/* Show login form if not authenticated */}
+      {!isAuthenticated ? (
+        <LoginFrom />
+      ) : (
+        <>
+          {/* Show data if authenticated */}
+          <pre className="bg-zinc-700">
+            {JSON.stringify(data, null, 2)}
+            {JSON.stringify(user, null, 2)}
+            <div className="px-4">isAuthenticated: {JSON.stringify(isAuthenticated)}</div>
+          </pre>
+        </>
+      )}
     </div>
   );
 }
