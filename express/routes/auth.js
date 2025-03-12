@@ -15,6 +15,7 @@ const limiter = rateLimit({
 // Apply rate limiter to the /login and /validate routes
 router.post('/login', limiter, passport.authenticate('local', { session: false }), authsController.login);
 router.get('/validate', limiter, authsController.validate);
+router.get('/refresh', limiter, authsController.refresh);
 
 // Error handling middleware
 router.use((err, req, res, next) => {

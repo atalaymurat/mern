@@ -16,22 +16,23 @@ export const useAuthSWR = () => {
     const { data, error, mutate } = useSWR('/auth/validate', fetcher, {
         onSuccess: (data) => {
             if (data.message === 'Authenticated') {
-                console.log('SWR DATA FOR LOGIN', data)
+                console.log('SWR ACCESS TOKEN VALIDATE SUCCESS ', JSON.stringify(data))
                 login(data.user) // Update authentication state
             }
         },
-        onError: (err) => {
-            console.log('DATA SWR ERROR', data)
+        onError: (error) => {
             logout()
             mutate(null, false) // Clear cached data without triggering a revalidation
+            console.log('ACCES_TOKEN VALIDATION ERROR', JSON.stringify(error))
         },
         revalidateOnFocus: true, // Disable revalidation on focus
         shouldRetryOnError: false, // Disable retries on error
     })
 
+
     return {
         isLoading: !error && !data, // Loading state (no error and no data yet)
-        isError: !!error && !error?.message === "Unauthorized" , // Error state
+        isError: !!error && !error?.message === 'Unauthorized', // Error state
         errorMessage: error?.message, // Expose the error message
         mutate, // Expose the mutate function for manual revalidation
     }

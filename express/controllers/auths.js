@@ -29,14 +29,17 @@ module.exports = {
                 secure: isProduction, // Only send over HTTPS in production
                 sameSite: isProduction ? 'none' : 'lax', // Allow cross-site cookies
                 path: '/', // Ensure the cookie is accessible across all routes
-                maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+                maxAge: 60 * 60 * 6000, // 1 hour in milliseconds 1000
             })
 
             // Exclude `password` and `email_verified` from the `user` object
             const mutatedUser = { ...user._doc, password: null }
 
             // Send a success response
-            res.status(200).json({ message: 'Login successful', user: mutatedUser })
+            res.status(200).json({
+                message: 'Login successful',
+                user: mutatedUser,
+            })
         } catch (error) {
             next(error) // Pass errors to the error-handling middleware
         }
@@ -44,26 +47,25 @@ module.exports = {
 
     validate: async (req, res, next) => {
         const token = req.cookies.access_token
-        console.log("TOKEN VALIDATE", token )
 
         // Check if the token exists
         if (!token) {
-            console.log("----*** TOKEN NOT FOUND ****--------")
+            console.log('----*** TOKEN NOT FOUND ****--------')
             return res.status(401).json({ message: 'Unauthorized' })
         }
 
         try {
             // Verify the token
             const decoded = JWT.verify(token, process.env.JWT_SECRET)
-            console.log("TOKEN DECODED : ", decoded)
-            
-            // find user 
+            console.log('TOKEN DECODED : ', decoded)
+
+            // find user
             const findUser = await User.findById(decoded.sub)
             if (!findUser) {
-              return res.status(401).json({message: "User not found"})
+                return res.status(401).json({ message: 'User not found' })
             }
 
-            const user = {...findUser._doc, password: null} 
+            const user = { ...findUser._doc, password: null }
 
             res.status(200).json({ message: 'Authenticated', user })
         } catch (error) {
@@ -76,5 +78,10 @@ module.exports = {
             }
             next(error) // Pass other errors to the error-handling middleware
         }
+    },
+
+    refresh: async (req, res, next) => {
+        const refreshToken = req.cookies.refresh_token
+        console.log('AUTH REFERESH ENTERED')
     },
 }
