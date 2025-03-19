@@ -7,6 +7,7 @@ import IsLoading from '../components/home/IsLoading'
 import IsError from '../components/home/IsError'
 import Header from '../components/home/Header'
 import DebugViewer from '../components/home/DebugViewer'
+import { Link } from 'react-router-dom'
 
 function Home() {
     const [data, setData] = useState([]) // Data state
@@ -52,11 +53,25 @@ function Home() {
             {!isAuthenticated ? (
                 <LoginFrom />
             ) : (
-                <DebugViewer
-                    data={data}
-                    user={user}
-                    isAuthenticated={isAuthenticated}
-                />
+                <>
+                    <div className="border flex flex-col items-center justify-center px-2 py-4 bg-zinc-300">
+                        <Link className='w-1/2' to="/doc">
+                            <button className="btn-purple my-2 w-full">
+                                Belgeler
+                            </button>
+                        </Link>
+                        <Link className='w-1/2' to="/doc/new">
+                            <button className="btn-purple my-2 w-full">
+                                Yeni Belge Oluştur
+                            </button>
+                        </Link>
+                    </div>
+                    <DebugViewer
+                        data={data}
+                        user={user}
+                        isAuthenticated={isAuthenticated}
+                    />
+                </>
             )}
         </div>
     )
