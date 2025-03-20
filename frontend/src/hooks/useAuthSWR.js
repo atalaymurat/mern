@@ -25,7 +25,7 @@ export const useAuthSWR = () => {
             mutate(null, false) // Clear cached data without triggering a revalidation
             console.log('ACCES_TOKEN VALIDATION ERROR', JSON.stringify(error))
         },
-        revalidateOnFocus: true, // Disable revalidation on focus
+        revalidateOnFocus: false, // Disable revalidation on focus
         shouldRetryOnError: false, // Disable retries on error
     })
 

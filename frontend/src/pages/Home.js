@@ -7,13 +7,15 @@ import IsLoading from '../components/home/IsLoading'
 import IsError from '../components/home/IsError'
 import Header from '../components/home/Header'
 import DebugViewer from '../components/home/DebugViewer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 function Home() {
     const [data, setData] = useState([]) // Data state
     const [dataLoading, setDataLoading] = useState(true) // Data loading state
     const { isLoading, isError, errorMessage } = useAuthSWR()
-    const { user, isAuthenticated, logout } = useAuth()
+    const { user, isAuthenticated, logout, isLoading: authLoading } = useAuth()
+    const location = useLocation()
+    const navigate = useNavigate()
 
     // Function to fetch data
     const getData = async () => {
@@ -36,8 +38,16 @@ function Home() {
         }
     }, [isAuthenticated])
 
+    // Redirect to protected routes if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            const from = location.state?.from || '/'
+            navigate(from, { replace: true }) // Redirect to original route
+        }
+    }, [isAuthenticated, navigate])
+
     // Loading state (authentication or data)
-    if (isLoading) {
+    if (isLoading || authLoading) {
         return <IsLoading />
     }
     // Error state (authentication or data)
@@ -55,12 +65,12 @@ function Home() {
             ) : (
                 <>
                     <div className="border flex flex-col items-center justify-center px-2 py-4 bg-zinc-300">
-                        <Link className='w-1/2' to="/doc">
+                        <Link className="w-1/2" to="/doc">
                             <button className="btn-purple my-2 w-full">
                                 Belgeler
                             </button>
                         </Link>
-                        <Link className='w-1/2' to="/doc/new">
+                        <Link className="w-1/2" to="/doc/new">
                             <button className="btn-purple my-2 w-full">
                                 Yeni Belge Oluştur
                             </button>
