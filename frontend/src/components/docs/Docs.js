@@ -1,15 +1,24 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import IsLoading from '../home/IsLoading'
 
 function Docs() {
     const [documents, setDocuments] = useState([])
+    const [isLoading, setIsloading] = useState(true)
     useEffect(() => {
         const getData = async () => {
             const { data } = await axios.get('/doc', { withCredentials: true })
             setDocuments(data.doc)
+            setIsloading(false)
         }
         getData()
     }, [])
+
+    if (isLoading) {
+        return <IsLoading/>
+    }
+
+
     return (
         <>
           <div className="mx-2 my-4 lg:w-2/3 w-full mx-auto flex flex-col bg-gray-100 ">
@@ -24,7 +33,7 @@ function Docs() {
             {documents.map((doc, i) => {
                 return (
                     <div key={i} className="grid grid-cols-4 border px-2">
-                        <div className='text-xs truncate'>{i+1}</div>
+                        <div className='text-xs truncate'>{doc._id}</div>
                         <div>{doc.customer}</div>
                         <div>{doc.person}</div>
                         <div>{doc.address}</div>

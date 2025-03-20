@@ -9,6 +9,7 @@ const passportJWT = passport.authenticate('jwt', { session: false })
 
 router
   .get('/',passportJWT, documentsController.index)
+  .get('/:id',passportJWT, documentsController.show)
   .post('/',passportJWT, documentsController.create)
 
 module.exports = router
