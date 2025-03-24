@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://app-amn2.onrender.com/",
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.0",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "formik": "^2.4.6",

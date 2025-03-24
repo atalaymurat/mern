@@ -6,6 +6,7 @@ import Docs from './pages/docs/Index'
 import DocNew from './pages/docs/New'
 import DocShow from './pages/docs/Show'
 import AuthGuard from './components/AuthGuard'
+import ShowPdf from './pages/docs/ShowPdf'
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                         <Route exact path="/doc/new" element={<DocNew />} />
                         <Route exact path="/doc/new" element={<DocNew />} />
                         <Route exact path="/doc/:id" element={<DocShow />} />
+                        <Route exact path="/doc/pdf/:id" element={<ShowPdf />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
