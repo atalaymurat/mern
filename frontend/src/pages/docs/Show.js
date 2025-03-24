@@ -48,10 +48,10 @@ const Show = () => {
                       2
                     )}_${doc?.customer?.replace(/\s/g, "")}`
                   )
-                    .slice(0, 14)
+                    .slice(0, 5)
                     .toUpperCase()}
                 >
-                  PDF
+                PDF
                 </a>
               )
             }
