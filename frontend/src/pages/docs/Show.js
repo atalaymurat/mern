@@ -32,7 +32,6 @@ const Show = () => {
     return (
         <div className="flex flex-col px-2">
             <div className='text-xl font-semibold px-2 py-4 mb-2'>Show Doc</div>
-            <pre>{JSON.stringify(doc, null, 2)}</pre>
             <BlobProvider document={<PDFdoc doc={doc} />}>
             {({ blob, url, loading, error }) =>
               loading ? (
@@ -65,6 +64,7 @@ const Show = () => {
               <div className='px-2 py-1 border-b'>{doc.address}</div>
 
             </div>
+            <pre>{JSON.stringify(doc, null, 2)}</pre>
         </div>
     )
 }

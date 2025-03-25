@@ -8,10 +8,10 @@ module.exports = {
 
     create: async (req, res, next) => {
         const data = req.body
+        console.log('CREATE DOC *** : ', data)
         const document = new Document(data)
         await document.save()
 
-        console.log('NEW DOCUMENT : ', document)
         res.status(200).json({ message: 'success', doc: document })
     },
     show: async (req, res, next) => {

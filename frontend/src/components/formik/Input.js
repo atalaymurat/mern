@@ -19,10 +19,10 @@ function Input({label, name, inputRef, ...rest}) {
         id={name}
         onChange={field.onChange}
         ref={inputRef} // Set the ref here 
+        value={field.value || ""}
         {...field}
         {...rest}
         // edit edilirken hata vermesin diye value degeri eklendi sorun olursa kaldır
-        value={field.value || ""}
       />
       <ErrorMessage name={name} component={TextError} />
     </div>
