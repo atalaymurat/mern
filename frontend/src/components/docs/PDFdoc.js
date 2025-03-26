@@ -97,6 +97,7 @@ const PDFdoc = ({ doc }) => {
                         <Header doc={doc} />
                         <Customer doc={doc} />
                         <PriceTable doc={doc} />
+                        <TotalsTable doc={doc} />
                     </View>
                 </Page>
             </Document>
@@ -199,7 +200,7 @@ const Header = ({ doc }) => (
                     Geçerli :
                 </Text>
                 <Text style={{ ...styles.item, flexBasis: '50%' }}>
-                    {localeDate(doc.docValid)}
+                    {localeDate(doc.validDate)}
                 </Text>
             </View>
             <View style={{ ...styles.flexRow }}>
@@ -228,11 +229,12 @@ const Header = ({ doc }) => (
 const PriceTable = ({ doc }) => {
     const { lineItems } = doc
     return (
-        <View style={{ ...styles.container }}>
+        <View style={{ ...styles.container, margin: '0px 0px' }}>
             <View
                 style={{
                     ...styles.flexCol,
                     margin: '0px 0px',
+                    borderBottom: '1px solid black',
                 }}
             >
                 <View
@@ -244,25 +246,31 @@ const PriceTable = ({ doc }) => {
                     }}
                 >
                     <Text style={{ flexBasis: '5%', ...styles.head }}>No</Text>
-                    <Text style={{ flexBasis: '8%', ...styles.head }}>
-                        Durumu
+                    <Text
+                        style={{
+                            flexBasis: '7%',
+                            ...styles.head,
+                            height: '100%',
+                        }}
+                    >
+                        Durum
                     </Text>
-                    <Text style={{ flexBasis: '8%', ...styles.head }}>
+                    <Text style={{ flexBasis: '7%', ...styles.head }}>
                         Menşei
                     </Text>
-                    <Text style={{ flexBasis: '14%', ...styles.head }}>
+                    <Text style={{ flexBasis: '12%', ...styles.head }}>
                         GTIP
                     </Text>
-                    <Text style={{ flexBasis: '36%', ...styles.head }}>
+                    <Text style={{ flexBasis: '38%', ...styles.head }}>
                         Açıklama
                     </Text>
                     <Text style={{ flexBasis: '5%', ...styles.head }}>Ad.</Text>
-                    <Text style={{ flexBasis: '12%', ...styles.head }}>
+                    <Text style={{ flexBasis: '14%', ...styles.head }}>
                         Birim Fiyat
                     </Text>
                     <Text
                         style={{
-                            flexBasis: '12%',
+                            flexBasis: '14%',
                             ...styles.head,
                             borderRight: '0px solid black',
                         }}
@@ -275,7 +283,6 @@ const PriceTable = ({ doc }) => {
                         style={{
                             ...styles.flexRow,
                             gap: 0,
-                            borderBottom: '1px solid black',
                             borderLeft: '1px solid black',
                             borderRight: '1px solid black',
                         }}
@@ -289,19 +296,19 @@ const PriceTable = ({ doc }) => {
                         >
                             {item.position}
                         </Text>
-                        <Text style={{ flexBasis: '8%', ...styles.cell }}>
+                        <Text style={{ flexBasis: '7%', ...styles.cell }}>
                             {item.condition}
                         </Text>
-                        <Text style={{ flexBasis: '8%', ...styles.cell }}>
+                        <Text style={{ flexBasis: '7%', ...styles.cell }}>
                             {item.origin}
                         </Text>
-                        <Text style={{ flexBasis: '14%', ...styles.cell }}>
+                        <Text style={{ flexBasis: '12%', ...styles.cell }}>
                             {item.gtipNo}
                         </Text>
                         <View
                             style={{
                                 ...styles.flexCol,
-                                flexBasis: '36%',
+                                flexBasis: '38%',
                                 ...styles.cell,
                                 margin: '0px 0px',
                                 padding: '2px 2px',
@@ -319,12 +326,12 @@ const PriceTable = ({ doc }) => {
                         >
                             {item.quantity}
                         </Text>
-                        <Text style={{ flexBasis: '12%', ...styles.cell }}>
+                        <Text style={{ flexBasis: '14%', ...styles.cell }}>
                             {formPrice(item.price)} {doc.currency}
                         </Text>
                         <Text
                             style={{
-                                flexBasis: '12%',
+                                flexBasis: '14%',
                                 ...styles.cell,
                                 borderRight: '0px solid black',
                             }}
@@ -334,6 +341,65 @@ const PriceTable = ({ doc }) => {
                     </View>
                 ))}
             </View>
+        </View>
+    )
+}
+
+const TotalsTable = ({ doc }) => {
+    const hasDiscount = doc.discountPrice && doc.discountPrice !== 0
+    const hasTax = doc.kdvPrice && doc.kdvPrice !== 0
+    const showSubtotals = hasDiscount || hasTax
+
+    const items = [
+        ...(showSubtotals
+            ? [{ label: 'Toplam', value: formPrice(doc.totalPrice) }]
+            : []),
+        ...(hasDiscount
+            ? [
+                  { label: 'İndirim', value: formPrice(doc.discountPrice) },
+                  { label: 'Net Toplam', value: formPrice(doc.netPrice) },
+              ]
+            : []),
+        ...(hasTax
+            ? [
+                  {
+                      label: `KDV (${doc.kdv || 20}%)`,
+                      value: formPrice(doc.kdvPrice),
+                  },
+              ]
+            : []),
+        {
+            label: 'GENEL TOPLAM',
+            value: formPrice(doc.grandTotal),
+            isTotal: true,
+        },
+    ]
+
+    return (
+        <View
+            style={{
+                margin: '2px 0px',
+                width: '100%',
+                alignItems: 'flex-end',
+            }}
+        >
+            {items.map((item, i) => (
+                <View
+                    key={i}
+                    style={{
+                        ...styles.flexRow,
+                        borderBottom: '1px solid black',
+                        width: '28%',
+                        padding: '2px 2px',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Text style={{}}>{item.label}</Text>
+                    <Text>
+                        {item.value} {doc.currency}
+                    </Text>
+                </View>
+            ))}
         </View>
     )
 }
