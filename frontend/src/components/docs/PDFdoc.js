@@ -97,7 +97,10 @@ const PDFdoc = ({ doc }) => {
                         <Header doc={doc} />
                         <Customer doc={doc} />
                         <PriceTable doc={doc} />
-                        <TotalsTable doc={doc} />
+                        {doc.showTotals && <TotalsTable doc={doc} />}
+                        <Descriptions doc={doc} />
+                        <Terms doc={doc} />
+                        <BankInfo />
                     </View>
                 </Page>
             </Document>
@@ -218,7 +221,9 @@ const Header = ({ doc }) => (
                 </Text>
             </View>
             <View style={{ ...styles.flexRow }}>
-                <Text style={{ width: '100%', padding: '2px 0px' }}>
+                <Text
+                    style={{ width: '100%', padding: '2px 0px', color: 'grey' }}
+                >
                     www.varolmakina.com
                 </Text>
             </View>
@@ -250,18 +255,17 @@ const PriceTable = ({ doc }) => {
                         style={{
                             flexBasis: '7%',
                             ...styles.head,
-                            height: '100%',
                         }}
                     >
                         Durum
                     </Text>
-                    <Text style={{ flexBasis: '7%', ...styles.head }}>
+                    <Text style={{ flexBasis: '8%', ...styles.head }}>
                         Menşei
                     </Text>
                     <Text style={{ flexBasis: '12%', ...styles.head }}>
                         GTIP
                     </Text>
-                    <Text style={{ flexBasis: '38%', ...styles.head }}>
+                    <Text style={{ flexBasis: '35%', ...styles.head }}>
                         Açıklama
                     </Text>
                     <Text style={{ flexBasis: '5%', ...styles.head }}>Ad.</Text>
@@ -299,16 +303,22 @@ const PriceTable = ({ doc }) => {
                         <Text style={{ flexBasis: '7%', ...styles.cell }}>
                             {item.condition}
                         </Text>
-                        <Text style={{ flexBasis: '7%', ...styles.cell }}>
+                        <Text style={{ flexBasis: '8%', ...styles.cell }}>
                             {item.origin}
                         </Text>
-                        <Text style={{ flexBasis: '12%', ...styles.cell }}>
+                        <Text
+                            style={{
+                                flexBasis: '12%',
+                                ...styles.cell,
+                                fontSize: 7,
+                            }}
+                        >
                             {item.gtipNo}
                         </Text>
                         <View
                             style={{
                                 ...styles.flexCol,
-                                flexBasis: '38%',
+                                flexBasis: '35%',
                                 ...styles.cell,
                                 margin: '0px 0px',
                                 padding: '2px 2px',
@@ -356,7 +366,7 @@ const TotalsTable = ({ doc }) => {
             : []),
         ...(hasDiscount
             ? [
-                  { label: 'İndirim', value: formPrice(doc.discountPrice) },
+                  { label: 'İndirim', value: formPrice(doc.discount) },
                   { label: 'Net Toplam', value: formPrice(doc.netPrice) },
               ]
             : []),
@@ -369,7 +379,7 @@ const TotalsTable = ({ doc }) => {
               ]
             : []),
         {
-            label: 'GENEL TOPLAM',
+            label: 'Genel Toplam',
             value: formPrice(doc.grandTotal),
             isTotal: true,
         },
@@ -378,28 +388,185 @@ const TotalsTable = ({ doc }) => {
     return (
         <View
             style={{
-                margin: '2px 0px',
+                margin: '0px 0px',
                 width: '100%',
-                alignItems: 'flex-end',
+                flexDirection: 'row',
             }}
         >
-            {items.map((item, i) => (
-                <View
-                    key={i}
-                    style={{
-                        ...styles.flexRow,
-                        borderBottom: '1px solid black',
-                        width: '28%',
-                        padding: '2px 2px',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Text style={{}}>{item.label}</Text>
-                    <Text>
-                        {item.value} {doc.currency}
-                    </Text>
-                </View>
-            ))}
+            <View
+                style={{
+                    flexDirection: 'column',
+                    marginLeft: 'auto',
+                    flexBasis: '33%',
+                }}
+            >
+                {items.map((item, i) => (
+                    <View
+                        key={i}
+                        style={{
+                            ...styles.flexRow,
+                            borderBottom: '1px solid black',
+                            borderColor: 'gray',
+                            padding: '2px 4px',
+                            margin: '0px 0px',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Text
+                            style={
+                                item.label === 'Genel Toplam' && {
+                                    fontWeight: 'bold',
+                                }
+                            }
+                        >
+                            {item.label}
+                        </Text>
+                        <Text
+                            style={
+                                item.label === 'Genel Toplam' && {
+                                    fontWeight: 'bold',
+                                }
+                            }
+                        >
+                            {item.label === 'İndirim' && '- '}
+                            {item.value} {doc.currency}
+                        </Text>
+                    </View>
+                ))}
+            </View>
         </View>
     )
 }
+
+const Terms = ({ doc }) => (
+    <View
+        style={{ border: '1px solid black', flexGrow: '1', margin: '4px 0px' }}
+    >
+        <Text
+            style={{
+                fontSize: 10,
+                fontWeight: 'bold',
+                padding: '2px 4px',
+                borderBottom: '1px solid black',
+                color: '#e30713',
+            }}
+        >
+            TESLİM ŞARTLARI
+        </Text>
+        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
+            <Text style={{ flexBasis: '15%', ...styles.label }}>
+                TESLİM SÜRESİ :
+            </Text>
+            <Text>{doc.deliveryDate}</Text>
+            <Text>(Sipariş avansının alınmasına istinaden)</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
+            <Text style={{ flexBasis: '15%', ...styles.label }}>
+                TESLİM YERİ :
+            </Text>
+            <Text>{doc.deliveryTerms}</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
+            <Text style={{ flexBasis: '15%', ...styles.label }}>GARANTİ :</Text>
+            <Text>{doc.warranty}</Text>
+            <Text>
+                {' '}
+                (Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
+                kapsamında değerlendirilmez)
+            </Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
+            <Text style={{ flexBasis: '15%', ...styles.label }}>
+                ÖDEME ŞEKLİ :
+            </Text>
+            <Text>{doc.paymentTerms}</Text>
+        </View>
+    </View>
+)
+
+const Descriptions = ({ doc }) => (
+    <View style={{ margin: "4px 0px"}}>
+        <Text>
+            - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir
+        </Text>
+        <Text>- Seri Numaralar faturada belirtilecektir</Text>
+        <Text>- CE belgesine haizdir</Text>
+        <Text>
+            - Makinenin çalışması için zorunlu olan parça ve aksesuarlar dışında
+            ilave parça ve aksesuar bulunmamaktadır
+        </Text>
+        <Text>
+            - Resmi işlemlerinizide oluşabilecek G.T.I.P kod uyumsuzluğundan
+            şirkemiz sorumlu değildir
+        </Text>
+        <Text>
+            - Kurulum için elektrik bağlantısı ,basınçlı hava, toz emici ve
+            diğer altyapı gereksinimleri müşteri tarandan hazırlanacaktır
+        </Text>
+        {doc.isNewSign && (
+            <Text style={{ fontWeight: 'bold' }}>
+                - Makineler Yeni ve Kullanılmamıştır
+            </Text>
+        )}
+    </View>
+)
+const BankInfo = () => (
+    <View
+        style={{ border: '1px solid black', flexGrow: '1', margin: '4px 0px' }}
+    >
+        <Text
+            style={{
+                padding: '2px 4px',
+                color: '#e30713',
+                borderBottom: '1px solid black',
+                fontWeight: 'bold',
+            }}
+        >
+            BANKA HESAP BİLGİLERİ
+        </Text>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>
+                SATICI FİRMA :
+            </Text>
+            <Text>VMM VAROL MAKINA SAN. ve TİC. LTD. ŞTİ.</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>ADRES :</Text>
+            <Text>
+                Esenkent Mah. Yücesoy Sokak No: 16/1 Ümraniye / İstanbul
+            </Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>BANKA : </Text>
+            <Text>T.C. ZİRAAT BANKASI A.Ş</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>
+                ŞUBE / ŞUBE KODU :{' '}
+            </Text>
+            <Text>2248-ALTUNİZADE TİCARİ ŞUBESİ</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>
+                SWIFT NO :
+            </Text>
+            <Text>TCZBTR2A</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>TL IBAN :</Text>
+            <Text>TR31 0001 0022 4850 9109 2950 29</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>
+                EURO IBAN :
+            </Text>
+            <Text>TR26 0001 0022 4850 9109 2950 22</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>
+                USD IBAN :
+            </Text>
+            <Text>TR69 0001 0022 4850 9109 2950 24</Text>
+        </View>
+    </View>
+)

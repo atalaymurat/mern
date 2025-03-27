@@ -2,6 +2,7 @@ import React from 'react'
 import { Formik, Form, FieldArray } from 'formik'
 import FormikControl from '../formik/FormikControl'
 import axios from 'axios'
+import { GTIP_NUMBERS, CUR_TYPES } from './helpers'
 
 const DocForm = ({ user }) => {
     const INITIAL_VALUES = {
@@ -26,13 +27,15 @@ const DocForm = ({ user }) => {
             },
         ],
         user: user?._id || null,
+        paymentTerms: '',
+        deliveryDate: '',
+        warranty: '',
+        kdv: 20,
+        discount: '',
+        deliveryTerms: '',
+        isNewSign: false,
+        showTotals: true,
     }
-    const CUR_TYPES = [
-        { label: 'Seçiniz...', value: '' },
-        { label: 'TL', value: 'TL' },
-        { label: 'USD', value: 'USD' },
-        { label: 'EUR', value: 'EUR' },
-    ]
 
     const WorkButtonGroup = ({ values, i, remove, push }) => {
         return (
@@ -85,7 +88,7 @@ const DocForm = ({ user }) => {
                             withCredentials: true,
                         })
                         alert(JSON.stringify(data))
-                        resetForm()
+                        // resetForm()
                     }
                 }}
             >
@@ -178,7 +181,17 @@ const DocForm = ({ user }) => {
                                                                 </div>
                                                                 <div className="col-span-11 grid grid-cols-3 gap-2">
                                                                     <FormikControl
-                                                                        control="input"
+                                                                        control="select"
+                                                                        options={[
+                                                                            {
+                                                                                value: 'Yeni',
+                                                                                label: 'Yeni',
+                                                                            },
+                                                                            {
+                                                                                value: '2.El',
+                                                                                label: '2.El',
+                                                                            },
+                                                                        ]}
                                                                         type="text"
                                                                         name={`lineItems.${i}.condition`}
                                                                         label="Durumu"
@@ -190,7 +203,10 @@ const DocForm = ({ user }) => {
                                                                         label="Menşei"
                                                                     />
                                                                     <FormikControl
-                                                                        control="input"
+                                                                        control="select"
+                                                                        options={
+                                                                            GTIP_NUMBERS
+                                                                        }
                                                                         type="text"
                                                                         name={`lineItems.${i}.gtipNo`}
                                                                         label="GTIP No"
@@ -208,7 +224,7 @@ const DocForm = ({ user }) => {
                                                                 control="input"
                                                                 type="text"
                                                                 name={`lineItems.${i}.caption`}
-                                                                label="Alt Açıklama"
+                                                                label="Alt Başlık"
                                                             />
                                                             <div className="grid grid-cols-3 gap-2">
                                                                 <FormikControl
@@ -234,6 +250,60 @@ const DocForm = ({ user }) => {
                                                     )}
                                                 </FieldArray>
                                             ))}
+                                        </div>
+
+                                        <div className="grid gap-1 grid-cols-2">
+                                            <FormikControl
+                                                control="input"
+                                                type="text"
+                                                name="kdv"
+                                                label="KDV Oranı"
+                                            />
+                                            <FormikControl
+                                                control="input"
+                                                type="text"
+                                                name="discount"
+                                                label="İndirim Miktarı"
+                                            />
+                                        </div>
+                                        <div className="grid gap-1 grid-cols-2">
+                                            <FormikControl
+                                                control="input"
+                                                type="text"
+                                                name="deliveryTerms"
+                                                label="Teslim Yeri"
+                                            />
+                                            <FormikControl
+                                                control="input"
+                                                type="text"
+                                                name="warranty"
+                                                label="Garanti Süresi"
+                                            />
+                                        </div>
+                                        <FormikControl
+                                            control="textArea"
+                                            type="text"
+                                            name="deliveryDate"
+                                            label="Teslim Süresi"
+                                        />
+                                        <FormikControl
+                                            control="textArea"
+                                            type="text"
+                                            name="paymentTerms"
+                                            label="Ödeme Şekli"
+                                        />
+                                        <div className='grid grid-cols-2 gap-1 justify-items-start'>
+                                        <FormikControl
+                                            control="checkbox"
+                                            name={`isNewSign`}
+                                            label="Yeni İbaresi Eklensin"
+                                        />
+                                        <FormikControl
+                                            control="checkbox"
+                                            name={`showTotals`}
+                                            label="Toplamlar Gösterilsin"
+                                        />
+
                                         </div>
 
                                         <button

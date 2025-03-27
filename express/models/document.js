@@ -42,6 +42,8 @@ const documentSchema = new Schema({
     grandTotal: Number,
     kdv: Number,
     discount: Number,
+    showTotals: Boolean,
+    isNewSign: Boolean,
 })
 
 documentSchema.set('timestamps', true)
@@ -85,10 +87,17 @@ documentSchema.pre('save', function (next) {
         (sum, item) => sum + item.totalPrice,
         0
     )
+    // Convert discount and kdv to numbers if they are strings
+    const discount = Number(this.discount) || 0;
+    const kdv = Number(this.kdv) || 0;
+    console.log("PRE SAVE CALC ::: " , this)
+
+
+
     this.totalPrice = subtotal
-    this.discountPrice = (subtotal * (this.discount || 0)) / 100
-    this.netPrice = subtotal - this.discountPrice
-    this.kdvPrice = (this.netPrice * (this.kdv || 0)) / 100
+    this.discountPrice = subtotal - discount
+    this.netPrice = subtotal - discount
+    this.kdvPrice = (this.netPrice * (kdv || 0)) / 100
     this.grandTotal = this.netPrice + this.kdvPrice
 
     if (this.docDate && !this.validDate) {

@@ -5,7 +5,7 @@ import TextError from './TextError'
 function Select(props) {
   const { label, name, options, ...rest } = props
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col p-0 m-0">
       <label htmlFor="{name}" className="block">
         <span className="text-sm font-semibold text-gray-500">{label}</span>
       </label>
@@ -18,7 +18,7 @@ function Select(props) {
       >
         {options.map((op) => {
           return (
-            <option value={op.value} key={op.value} className='capitalize'>
+            <option value={op.value} key={op.value} className='capitalize text-xs'>
               {op.label}
             </option>
           )
