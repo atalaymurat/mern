@@ -393,6 +393,26 @@ const TotalsTable = ({ doc }) => {
                 flexDirection: 'row',
             }}
         >
+            <View style={{ margin: '4px 0px', overflow: 'hidden', color: "grey" }}>
+                <Text>
+                    - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir.
+                </Text>
+                <Text>- Seri Numaralar faturada belirtilecektir.</Text>
+                <Text>- CE belgesine haizdir.</Text>
+                <Text>
+                    - G.T.I.P kod uyuşmazlıklarından, satıcı sorumlu tutulamaz.
+                </Text>
+                <Text>
+                    - Kurulum için gerekli elektrik ,basınçlı hava, toz emici ve diğer
+                </Text>
+                <Text>
+                    altyapı gereksinimleri müşteri tarandan
+                    hazırlanacaktır.
+                </Text>
+                <Text>
+                    - Mucbir nedenler veya üretici kaynaklı gecikmelerden satıcı sorumlu değildir.
+                </Text>
+            </View>
             <View
                 style={{
                     flexDirection: 'column',
@@ -458,7 +478,7 @@ const Terms = ({ doc }) => (
                 TESLİM SÜRESİ :
             </Text>
             <Text>{doc.deliveryDate}</Text>
-            <Text>(Sipariş avansının alınmasına istinaden)</Text>
+            <Text style={{ color: "grey"}}>(Sipariş avansının, tamamının alınmasından sonra)</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
             <Text style={{ flexBasis: '15%', ...styles.label }}>
@@ -469,8 +489,7 @@ const Terms = ({ doc }) => (
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
             <Text style={{ flexBasis: '15%', ...styles.label }}>GARANTİ :</Text>
             <Text>{doc.warranty}</Text>
-            <Text>
-                {' '}
+            <Text style={{color: "grey"}}>
                 (Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
                 kapsamında değerlendirilmez)
             </Text>
@@ -485,27 +504,10 @@ const Terms = ({ doc }) => (
 )
 
 const Descriptions = ({ doc }) => (
-    <View style={{ margin: "4px 0px"}}>
-        <Text>
-            - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir
-        </Text>
-        <Text>- Seri Numaralar faturada belirtilecektir</Text>
-        <Text>- CE belgesine haizdir</Text>
-        <Text>
-            - Makinenin çalışması için zorunlu olan parça ve aksesuarlar dışında
-            ilave parça ve aksesuar bulunmamaktadır
-        </Text>
-        <Text>
-            - Resmi işlemlerinizide oluşabilecek G.T.I.P kod uyumsuzluğundan
-            şirkemiz sorumlu değildir
-        </Text>
-        <Text>
-            - Kurulum için elektrik bağlantısı ,basınçlı hava, toz emici ve
-            diğer altyapı gereksinimleri müşteri tarandan hazırlanacaktır
-        </Text>
+    <View style={{ margin: '4px 0px' }}>
         {doc.isNewSign && (
             <Text style={{ fontWeight: 'bold' }}>
-                - Makineler Yeni ve Kullanılmamıştır
+                - Makineler Yeni ve Kullanılmamıştır.
             </Text>
         )}
     </View>
@@ -533,7 +535,7 @@ const BankInfo = () => (
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
             <Text style={{ flexBasis: '20%', ...styles.label }}>ADRES :</Text>
             <Text>
-                Esenkent Mah. Yücesoy Sokak No: 16/1 Ümraniye / İstanbul
+                Esenkent Mah. Dudullu OSB, Yücesoy Sokak No: 16/1 Ümraniye / İstanbul
             </Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>

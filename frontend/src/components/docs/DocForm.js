@@ -82,13 +82,11 @@ const DocForm = ({ user }) => {
                 initialValues={INITIAL_VALUES}
                 onSubmit={async (values, { resetForm }) => {
                     if (!editMode) {
-                        alert(JSON.stringify(values, null, 2))
 
-                        const { data } = await axios.post('/doc', values, {
+                        await axios.post('/doc', values, {
                             withCredentials: true,
                         })
-                        alert(JSON.stringify(data))
-                        // resetForm()
+                        resetForm()
                     }
                 }}
             >
@@ -183,6 +181,7 @@ const DocForm = ({ user }) => {
                                                                     <FormikControl
                                                                         control="select"
                                                                         options={[
+                                                                            { label: 'Seçiniz...', value: ''},
                                                                             {
                                                                                 value: 'Yeni',
                                                                                 label: 'Yeni',
@@ -221,10 +220,10 @@ const DocForm = ({ user }) => {
                                                                 label="Ürün Tanımı"
                                                             />
                                                             <FormikControl
-                                                                control="input"
+                                                                control="textArea"
                                                                 type="text"
                                                                 name={`lineItems.${i}.caption`}
-                                                                label="Alt Başlık"
+                                                                label="Alt Açıklama"
                                                             />
                                                             <div className="grid grid-cols-3 gap-2">
                                                                 <FormikControl

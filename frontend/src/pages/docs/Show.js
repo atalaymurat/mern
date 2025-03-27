@@ -64,7 +64,7 @@ const Show = () => {
               <div className='px-2 py-1 border-b'>{doc.address}</div>
 
             </div>
-            <pre>{JSON.stringify(doc, null, 2)}</pre>
+            <pre>{/* JSON.stringify(doc, null, 2) */}</pre>
         </div>
     )
 }
