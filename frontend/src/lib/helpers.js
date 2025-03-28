@@ -5,3 +5,11 @@ export const localeDate = (date) => {
     day: "2-digit",
   })
 }
+
+export const formPrice = (number) => {
+    let n = Number(number)
+    return n.toLocaleString('tr-TR', {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+    })
+}

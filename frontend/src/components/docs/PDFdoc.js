@@ -12,7 +12,7 @@ import {
 import UbuntuRegular from '../../styles/Ubuntu/Ubuntu-Regular.ttf'
 import UbuntuBold from '../../styles/Ubuntu/Ubuntu-Bold.ttf'
 import UbuntuLight from '../../styles/Ubuntu/Ubuntu-Light.ttf'
-import { localeDate } from '../../lib/helpers'
+import { localeDate, formPrice } from '../../lib/helpers'
 
 Font.register({
     family: 'Ubuntu',
@@ -23,13 +23,6 @@ Font.register({
     ],
 })
 
-const formPrice = (number) => {
-    let n = Number(number)
-    return n.toLocaleString('tr-TR', {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 0,
-    })
-}
 
 const styles = StyleSheet.create({
     page: {

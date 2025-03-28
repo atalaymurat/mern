@@ -6,7 +6,6 @@ const New = () => {
     const { user } = useAuth()
     return (
         <div>
-            Yeni Belge
             <DocForm user={user} />
         </div>
     )

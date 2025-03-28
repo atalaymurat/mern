@@ -72,15 +72,19 @@ function Home() {
                         </Link>
                         <Link className="w-1/2" to="/doc/new">
                             <button className="btn-purple my-2 w-full">
-                                Yeni Belge Oluştur
+                                Proforma Oluştur
                             </button>
                         </Link>
                     </div>
+                    {/* 
+                    
                     <DebugViewer
                         data={data}
                         user={user}
                         isAuthenticated={isAuthenticated}
                     />
+                    
+                    */}
                 </>
             )}
         </div>
