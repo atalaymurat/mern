@@ -1,10 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
 import IsLoading from '../../components/home/IsLoading'
-import { BlobProvider } from "@react-pdf/renderer"
-import PDFdoc from '../../components/docs/PDFdoc'
 import Doc from '../../components/docs/Doc'
+import { useParams } from 'react-router-dom'
 
 const Show = () => {
     const [doc, setDoc] = useState(null)

@@ -33,8 +33,6 @@ const documentSchema = new Schema({
     deliveryDate: String, // teslim zamanı
     deliveryTerms: String, // Teslim yeri ve şekli
     warranty: String, // Garanti
-    package: String, // Paketleme
-
     totalPrice: Number,
     discountPrice: Number,
     netPrice: Number,
@@ -44,6 +42,7 @@ const documentSchema = new Schema({
     discount: Number,
     showTotals: Boolean,
     isNewSign: Boolean,
+    extraLine: String,
 })
 
 documentSchema.set('timestamps', true)

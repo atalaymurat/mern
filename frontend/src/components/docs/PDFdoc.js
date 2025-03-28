@@ -503,6 +503,12 @@ const Descriptions = ({ doc }) => (
                 - Makineler Yeni ve Kullanılmamıştır.
             </Text>
         )}
+        {doc.extraLine && (
+            <Text style={{ fontWeight: 'normal' }}>
+                {doc.extraLine}
+            </Text>
+
+        )}
     </View>
 )
 const BankInfo = () => (

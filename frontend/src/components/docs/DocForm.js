@@ -6,6 +6,7 @@ import { GTIP_NUMBERS, CUR_TYPES } from './helpers'
 
 const DocForm = ({ user }) => {
     const INITIAL_VALUES = {
+        docType: "PRO",
         customer: '',
         person: '',
         address: '',
@@ -35,6 +36,7 @@ const DocForm = ({ user }) => {
         deliveryTerms: '',
         isNewSign: false,
         showTotals: true,
+        extraLine: ""
     }
 
     const WorkButtonGroup = ({ values, i, remove, push }) => {
@@ -96,7 +98,7 @@ const DocForm = ({ user }) => {
                             <div className="w-full flex justify-center items-center">
                                 <div className="lg:w-2/3 w-full border px-2 py-4">
                                     <div className="font-semibold text-xl py-2 text-center">
-                                        Belge Oluşturma Formu
+                                        Proforma Oluşturma Formu
                                     </div>
                                     <Form>
                                         <FormikControl
@@ -304,6 +306,12 @@ const DocForm = ({ user }) => {
                                         />
 
                                         </div>
+                                        <FormikControl
+                                            control="textArea"
+                                            type="text"
+                                            name="extraLine"
+                                            label="İlave Açıklamalar"
+                                        />
 
                                         <button
                                             type="submit"
