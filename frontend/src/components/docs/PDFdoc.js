@@ -349,18 +349,23 @@ const PriceTable = ({ doc }) => {
 }
 
 const TotalsTable = ({ doc }) => {
-    const hasDiscount = doc.discountPrice && doc.discountPrice !== 0
+    const hasDiscount = doc.discount && doc.discountPrice !== 0
     const hasTax = doc.kdvPrice && doc.kdvPrice !== 0
-    const showSubtotals = hasDiscount || hasTax
+    const showSubtotals = hasDiscount && hasTax
 
     const items = [
         ...(showSubtotals
             ? [{ label: 'Toplam', value: formPrice(doc.totalPrice) }]
             : []),
-        ...(hasDiscount
+        ...(hasDiscount && hasTax
             ? [
-                  { label: 'İndirim', value: formPrice(doc.discount) },
-                  { label: 'Net Toplam', value: formPrice(doc.netPrice) },
+                  { label: 'i̇ndirim', value: formPrice(doc.discount) },
+                  { label: 'net toplam', value: formPrice(doc.netPrice) },
+              ]
+            : []),
+        ...(hasDiscount && !hasTax 
+            ? [
+                  { label: 'i̇ndirim', value: formPrice(doc.discount) },
               ]
             : []),
         ...(hasTax
@@ -386,7 +391,7 @@ const TotalsTable = ({ doc }) => {
                 flexDirection: 'row',
             }}
         >
-            <View style={{ margin: '4px 0px', overflow: 'hidden', color: "grey" }}>
+            <View style={{ marginTop: '12px', overflow: 'hidden', color: "grey", fontSize: 9 }}>
                 <Text>
                     - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir.
                 </Text>

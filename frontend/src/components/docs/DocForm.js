@@ -3,10 +3,13 @@ import { Formik, Form, FieldArray } from 'formik'
 import FormikControl from '../formik/FormikControl'
 import axios from 'axios'
 import { GTIP_NUMBERS, CUR_TYPES } from './helpers'
+import { useNavigate } from 'react-router-dom'
+import * as Yup from 'yup'
 
 const DocForm = ({ user }) => {
+    const navigate = useNavigate()
     const INITIAL_VALUES = {
-        docType: "PRO",
+        docType: 'PRO',
         customer: '',
         person: '',
         address: '',
@@ -30,13 +33,13 @@ const DocForm = ({ user }) => {
         user: user?._id || null,
         paymentTerms: '',
         deliveryDate: '',
-        warranty: '',
+        warranty: '12 Ay',
         kdv: 20,
         discount: '',
-        deliveryTerms: '',
+        deliveryTerms: 'İstanbul Depodan Teslim',
         isNewSign: false,
         showTotals: true,
-        extraLine: ""
+        extraLine: '',
     }
 
     const WorkButtonGroup = ({ values, i, remove, push }) => {
@@ -76,23 +79,42 @@ const DocForm = ({ user }) => {
         )
     }
 
+    const validation = Yup.object({
+        customer: Yup.string().required('Gerekli'),
+        currency: Yup.string().required('Para Birimini Belirleyin'),
+        lineItems: Yup.array().of(
+            Yup.object().shape({
+                desc: Yup.string().required('Gerekli'),
+                price: Yup.number()
+                    .required('Gerekli')
+                    .typeError('Rakam Giriniz'),
+                quantity: Yup.number()
+                    .required('Gerekli')
+                    .min(1, 'En az bir adet olabilir'),
+            })
+        ),
+    })
+
     const editMode = false
     return (
         <div>
             <Formik
                 enableReinitialize
+                validationSchema={validation}
                 initialValues={INITIAL_VALUES}
-                onSubmit={async (values, { resetForm }) => {
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
                     if (!editMode) {
-
-                        await axios.post('/doc', values, {
+                        const { data } = await axios.post('/doc', values, {
                             withCredentials: true,
                         })
+
+                        setSubmitting(false)
                         resetForm()
+                        navigate(`/doc/${data.doc._id}`)
                     }
                 }}
             >
-                {({ values }) => {
+                {({ values, isSubmitting }) => {
                     return (
                         <React.Fragment>
                             <div className="w-full flex justify-center items-center">
@@ -100,7 +122,13 @@ const DocForm = ({ user }) => {
                                     <div className="font-semibold text-xl py-2 text-center">
                                         Proforma Oluşturma Formu
                                     </div>
-                                    <Form>
+                                    <Form
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault()
+                                            }
+                                        }}
+                                    >
                                         <FormikControl
                                             control="input"
                                             type="text"
@@ -183,7 +211,10 @@ const DocForm = ({ user }) => {
                                                                     <FormikControl
                                                                         control="select"
                                                                         options={[
-                                                                            { label: 'Seçiniz...', value: ''},
+                                                                            {
+                                                                                label: 'Seçiniz...',
+                                                                                value: '',
+                                                                            },
                                                                             {
                                                                                 value: 'Yeni',
                                                                                 label: 'Yeni',
@@ -293,18 +324,17 @@ const DocForm = ({ user }) => {
                                             name="paymentTerms"
                                             label="Ödeme Şekli"
                                         />
-                                        <div className='grid grid-cols-2 gap-1 justify-items-start'>
-                                        <FormikControl
-                                            control="checkbox"
-                                            name={`isNewSign`}
-                                            label="Yeni İbaresi Eklensin"
-                                        />
-                                        <FormikControl
-                                            control="checkbox"
-                                            name={`showTotals`}
-                                            label="Toplamlar Gösterilsin"
-                                        />
-
+                                        <div className="grid grid-cols-2 gap-1 justify-items-start">
+                                            <FormikControl
+                                                control="checkbox"
+                                                name={`isNewSign`}
+                                                label="Yeni İbaresi Eklensin"
+                                            />
+                                            <FormikControl
+                                                control="checkbox"
+                                                name={`showTotals`}
+                                                label="Toplamlar Gösterilsin"
+                                            />
                                         </div>
                                         <FormikControl
                                             control="textArea"
@@ -314,10 +344,13 @@ const DocForm = ({ user }) => {
                                         />
 
                                         <button
+                                            disabled={isSubmitting}
                                             type="submit"
                                             className="btn-submit mt-6 mb-2 w-full"
                                         >
-                                            Kaydet
+                                            {isSubmitting
+                                                ? 'Kaydediyor...'
+                                                : 'Kaydet'}
                                         </button>
                                     </Form>
                                 </div>
