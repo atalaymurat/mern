@@ -42,8 +42,9 @@ function Docs() {
                                         {doc.docType} {doc.docCode}
                                     </div>
                                     <div>
-                                        {localeDate(doc.docDate)}
+                                        {localeDate(doc.docDate)}  {doc.user.displayName}
                                     </div>
+
                                 </div>
                             </Link>
                             <div className="text-sm px-1 col-span-2">

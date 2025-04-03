@@ -11,7 +11,7 @@ const Doc = ({ doc }) => {
         { label: 'Email', value: doc.email },
         { label: 'Veri Dairesi', value: doc.vd },
         { label: 'Vergi No', value: doc.vatNo },
-        { label: 'Oluşturan', value: doc.user },
+        { label: 'Oluşturan', value: doc.user?.displayName },
         { label: 'Versiyon', value: doc.version },
         { label: 'Ödeme Şekli', value: doc.paymentTerms },
         { label: 'Teslim süresi', value: doc.deliveryDate },
@@ -46,15 +46,15 @@ const Doc = ({ doc }) => {
                 {doc.lineItems.map((item, i) => (
                     <div className="">
                         <div className="border border-red-500 grid grid-flow-row grid-cols-4 grid-rows-4 text-sm items-center gap-1 my-2">
-                            <div className="border col-span-4 self-end">{item.desc}</div>
+                            <div className="border col-span-4 self-end">
+                                {item.desc}
+                            </div>
                             <div className="text-balance border col-span-4 row-span-2">
                                 {item.caption}
                             </div>
                             <div className="border">{item.condition}</div>
-                            <div className="border">
-                                {item.origin}
-                            </div>
-                            <div className='col-span-2'>{item.gtipNo}</div>
+                            <div className="border">{item.origin}</div>
+                            <div className="col-span-2">{item.gtipNo}</div>
                             <div className="justify-self-center row-span-2">
                                 {item.quantity} adet
                             </div>

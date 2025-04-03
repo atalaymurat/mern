@@ -1,18 +1,13 @@
 import React from 'react'
 import IsLoading from '../home/IsLoading'
-import {
-    Document,
-    Page,
-    Text,
-    View,
-    StyleSheet,
-    Font,
-    Image,
-} from '@react-pdf/renderer'
+import { Document, Page, Text, View, Font, Image } from '@react-pdf/renderer'
 import UbuntuRegular from '../../styles/Ubuntu/Ubuntu-Regular.ttf'
 import UbuntuBold from '../../styles/Ubuntu/Ubuntu-Bold.ttf'
 import UbuntuLight from '../../styles/Ubuntu/Ubuntu-Light.ttf'
 import { localeDate, formPrice } from '../../lib/helpers'
+import VmmSign from '../../lib/vmm.png'
+import Terms from './Terms'
+import { styles } from './Styles'
 
 Font.register({
     family: 'Ubuntu',
@@ -21,59 +16,6 @@ Font.register({
         { src: UbuntuBold, fontWeight: 'bold', fontStyle: 'normal' },
         { src: UbuntuLight, fontWeight: 'light', fontStyle: 'normal' },
     ],
-})
-
-const styles = StyleSheet.create({
-    page: {
-        fontFamily: 'Ubuntu',
-        width: '100%',
-        fontSize: 10,
-    },
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'top',
-        margin: '5px 2px',
-    },
-    flexCol: {
-        width: '100%',
-        flexDirection: 'column',
-        margin: '0px 1px',
-    },
-    flexRow: {
-        flexDirection: 'row',
-        gap: '3px',
-        padding: '0px 0px',
-    },
-    heading: {
-        fontWeight: 'bold',
-        fontSize: 12,
-        textDecoration: 'underline',
-        flexBasis: '50%',
-        textAlign: 'center',
-    },
-    label: {
-        fontWeight: 'bold',
-        color: 'grey',
-    },
-    item: {
-        flexGrow: 0,
-    },
-    head: {
-        backgroundColor: '#e30713',
-        fontWeight: 'bold',
-        color: 'white',
-        fontSize: 9,
-        textAlign: 'center',
-        alignSelf: 'center',
-        padding: '5px 0px',
-        borderRight: '1px solid black',
-    },
-    cell: {
-        fontSize: 9,
-        borderRight: '1px solid black',
-        padding: '4px 4px',
-    },
 })
 
 const PDFdoc = ({ doc }) => {
@@ -90,9 +32,17 @@ const PDFdoc = ({ doc }) => {
                         <Customer doc={doc} />
                         <PriceTable doc={doc} />
                         {doc.showTotals && <TotalsTable doc={doc} />}
-                        <Descriptions doc={doc} />
                         <Terms doc={doc} />
-                        <BankInfo />
+                        <BankInfo doc={doc} />
+
+                        <Image
+                            src={VmmSign}
+                            style={{
+                                marginLeft: 'auto',
+                                height: '70px',
+                                width: '202px',
+                            }}
+                        />
                     </View>
                 </Page>
             </Document>
@@ -290,10 +240,45 @@ const PriceTable = ({ doc }) => {
                             <Text style={{ fontWeight: 'bold' }}>
                                 {item.desc}
                             </Text>
-                            <Text style={{}}>{item.caption}</Text>
-                            <Text style={{}}>Menşei : {item.origin}</Text>
-                            <Text style={{}}>GTİP No : {item.gtipNo}</Text>
-                            <Text style={{}}>Durumu : {item.condition}</Text>
+                            <Text style={{ color: 'grey' }}>
+                                {item.caption}
+                            </Text>
+                            <View style={{ ...styles.flexRow }}>
+                                <Text
+                                    style={{
+                                        fontWeight: 'bold',
+                                        color: 'grey',
+                                    }}
+                                >
+                                    Menşei :
+                                </Text>
+                                <Text style={{}}>{item.origin}</Text>
+                            </View>
+                            <View style={{ ...styles.flexRow }}>
+                                <View style={{ ...styles.flexRow }}>
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold',
+                                            color: 'grey',
+                                        }}
+                                    >
+                                        GTİP No :
+                                    </Text>
+                                    <Text>{item.gtipNo}</Text>
+                                </View>
+                                <View style={{ ...styles.flexRow }}>
+                                    <Text
+                                        style={{
+                                            marginLeft: '20px',
+                                            fontWeight: 'bold',
+                                            color: 'grey',
+                                        }}
+                                    >
+                                        Durumu :
+                                    </Text>
+                                    <Text>{item.condition}</Text>
+                                </View>
+                            </View>
                         </View>
                         <Text
                             style={{
@@ -304,7 +289,13 @@ const PriceTable = ({ doc }) => {
                         >
                             {item.quantity}
                         </Text>
-                        <Text style={{ flexBasis: '14%', ...styles.cell }}>
+                        <Text
+                            style={{
+                                flexBasis: '14%',
+                                ...styles.cell,
+                                textAlign: 'right',
+                            }}
+                        >
                             {formPrice(item.price)} {doc.currency}
                         </Text>
                         <Text
@@ -312,6 +303,7 @@ const PriceTable = ({ doc }) => {
                                 flexBasis: '14%',
                                 ...styles.cell,
                                 borderRight: '0px solid black',
+                                textAlign: 'right',
                             }}
                         >
                             {formPrice(item.totalPrice)} {doc.currency}
@@ -366,35 +358,6 @@ const TotalsTable = ({ doc }) => {
         >
             <View
                 style={{
-                    marginTop: '12px',
-                    overflow: 'hidden',
-                    color: 'grey',
-                    fontSize: 9,
-                }}
-            >
-                <Text>
-                    - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil
-                    değildir.
-                </Text>
-                <Text>- Seri Numaralar faturada belirtilecektir.</Text>
-                <Text>- CE belgesine haizdir.</Text>
-                <Text>
-                    - G.T.I.P kod uyuşmazlıklarından, satıcı sorumlu tutulamaz.
-                </Text>
-                <Text>
-                    - Kurulum için gerekli elektrik ,basınçlı hava, toz emici ve
-                    diğer
-                </Text>
-                <Text>
-                    altyapı gereksinimleri müşteri tarandan hazırlanacaktır.
-                </Text>
-                <Text>
-                    - Mucbir nedenler veya üretici kaynaklı gecikmelerden satıcı
-                    sorumlu değildir.
-                </Text>
-            </View>
-            <View
-                style={{
                     flexDirection: 'column',
                     marginLeft: 'auto',
                     flexBasis: '33%',
@@ -438,72 +401,7 @@ const TotalsTable = ({ doc }) => {
     )
 }
 
-const Terms = ({ doc }) => (
-    <View
-        style={{ border: '1px solid black', flexGrow: '1', margin: '4px 0px' }}
-    >
-        <Text
-            style={{
-                fontSize: 10,
-                fontWeight: 'bold',
-                padding: '2px 4px',
-                borderBottom: '1px solid black',
-                color: '#e30713',
-            }}
-        >
-            TESLİM ŞARTLARI
-        </Text>
-        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
-            <Text style={{ flexBasis: '15%', ...styles.label }}>
-                TESLİM SÜRESİ
-            </Text>
-            <View>
-                <Text>{doc.deliveryDate}</Text>
-                <Text style={{ color: 'grey', fontSize: 8 }}>
-                    Sipariş avansının, tamamının alınmasından sonra.
-                </Text>
-            </View>
-        </View>
-        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
-            <Text style={{ flexBasis: '15%', ...styles.label }}>
-                TESLİM YERİ
-            </Text>
-            <Text>{doc.deliveryTerms}</Text>
-        </View>
-        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
-            <Text style={{ flexBasis: '15%', ...styles.label }}>GARANTİ</Text>
-            <View>
-                <Text>{doc.warranty}</Text>
-                <Text style={{ color: 'grey', fontSize: 8 }}>
-                    Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
-                    kapsamında değerlendirilmez.
-                </Text>
-            </View>
-        </View>
-        <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
-            <Text style={{ flexBasis: '15%', ...styles.label }}>
-                ÖDEME ŞEKLİ
-            </Text>
-            <Text>{doc.paymentTerms}</Text>
-        </View>
-    </View>
-)
-
-const Descriptions = ({ doc }) => (
-    <View style={{ margin: '4px 0px' }}>
-        {doc.isNewSign && (
-            <Text style={{ fontWeight: 'bold', color: 'grey' }}>
-                - Makineler Yeni ve Kullanılmamıştır.
-            </Text>
-        )}
-        {doc.extraLine && (
-            <Text style={{ fontWeight: 'normal', color: 'grey' }}>
-                {doc.extraLine}
-            </Text>
-        )}
-    </View>
-)
-const BankInfo = () => (
+const BankInfo = ({ doc }) => (
     <View
         style={{ border: '1px solid black', flexGrow: '1', margin: '4px 0px' }}
     >
@@ -544,17 +442,29 @@ const BankInfo = () => (
             <Text style={{ flexBasis: '20%', ...styles.label }}>SWIFT NO</Text>
             <Text>TCZBTR2A</Text>
         </View>
-        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>TL IBAN</Text>
-            <Text>TR31 0001 0022 4850 9109 2950 29</Text>
-        </View>
-        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>EURO IBAN</Text>
-            <Text>TR26 0001 0022 4850 9109 2950 22</Text>
-        </View>
-        <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>USD IBAN</Text>
-            <Text>TR69 0001 0022 4850 9109 2950 24</Text>
-        </View>
+        {doc.currency === 'TL' && (
+            <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+                <Text style={{ flexBasis: '20%', ...styles.label }}>
+                    TL IBAN
+                </Text>
+                <Text>TR31 0001 0022 4850 9109 2950 29</Text>
+            </View>
+        )}
+        {doc.currency === 'EUR' && (
+            <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+                <Text style={{ flexBasis: '20%', ...styles.label }}>
+                    EURO IBAN
+                </Text>
+                <Text>TR26 0001 0022 4850 9109 2950 22</Text>
+            </View>
+        )}
+        {doc.currency === 'USD' && (
+            <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
+                <Text style={{ flexBasis: '20%', ...styles.label }}>
+                    USD IBAN
+                </Text>
+                <Text>TR69 0001 0022 4850 9109 2950 24</Text>
+            </View>
+        )}
     </View>
 )

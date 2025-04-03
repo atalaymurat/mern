@@ -3,6 +3,11 @@ const Document = require('../models/document')
 module.exports = {
     index: async (req, res, next) => {
         const documents = await Document.find()
+            .populate({
+                path: 'user',
+                select: 'displayName',
+            })
+            .sort({ docDate: -1 })
         res.status(200).json({ message: 'success', doc: documents })
     },
 
@@ -18,10 +23,10 @@ module.exports = {
         try {
             console.log('REQUEST SHOW:', req.params)
             const { id } = req.params
-            const document = await Document.findById(id)
-            console.log("Document Find : " , document)
+            const document = await Document.findById(id).populate('user')
+            console.log('Document Find : ', document)
 
-            res.status(200).json({ message: "success", doc: document })
+            res.status(200).json({ message: 'success', doc: document })
         } catch (err) {}
     },
 }

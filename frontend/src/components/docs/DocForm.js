@@ -110,7 +110,7 @@ const DocForm = ({ user }) => {
 
                         setSubmitting(false)
                         resetForm()
-                        navigate(`/doc/${data.doc._id}`)
+                        navigate(`/doc`)
                     }
                 }}
             >
