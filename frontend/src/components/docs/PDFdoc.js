@@ -85,7 +85,7 @@ const PDFdoc = ({ doc }) => {
         return (
             <Document author="VMM" producer="VMM" creator="VMM">
                 <Page size="A4" dpi="72" style={styles.page}>
-                    <View style={{ margin: '10px 10px' }}>
+                    <View style={{ margin: '10px 20px' }}>
                         <Header doc={doc} />
                         <Customer doc={doc} />
                         <PriceTable doc={doc} />
@@ -242,22 +242,8 @@ const PriceTable = ({ doc }) => {
                         border: '1px solid black',
                     }}
                 >
-                    <Text style={{ flexBasis: '5%', ...styles.head }}>No</Text>
-                    <Text
-                        style={{
-                            flexBasis: '7%',
-                            ...styles.head,
-                        }}
-                    >
-                        Durum
-                    </Text>
-                    <Text style={{ flexBasis: '8%', ...styles.head }}>
-                        Menşei
-                    </Text>
-                    <Text style={{ flexBasis: '12%', ...styles.head }}>
-                        GTIP
-                    </Text>
-                    <Text style={{ flexBasis: '35%', ...styles.head }}>
+                    <Text style={{ flexBasis: '5%', ...styles.head }}>Kod</Text>
+                    <Text style={{ flexBasis: '62%', ...styles.head }}>
                         Açıklama
                     </Text>
                     <Text style={{ flexBasis: '5%', ...styles.head }}>Ad.</Text>
@@ -292,32 +278,22 @@ const PriceTable = ({ doc }) => {
                         >
                             {item.position}
                         </Text>
-                        <Text style={{ flexBasis: '7%', ...styles.cell }}>
-                            {item.condition}
-                        </Text>
-                        <Text style={{ flexBasis: '8%', ...styles.cell }}>
-                            {item.origin}
-                        </Text>
-                        <Text
-                            style={{
-                                flexBasis: '12%',
-                                ...styles.cell,
-                                fontSize: 7,
-                            }}
-                        >
-                            {item.gtipNo}
-                        </Text>
                         <View
                             style={{
                                 ...styles.flexCol,
-                                flexBasis: '35%',
+                                flexBasis: '62%',
                                 ...styles.cell,
                                 margin: '0px 0px',
                                 padding: '2px 2px',
                             }}
                         >
-                            <Text style={{}}>{item.desc}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>
+                                {item.desc}
+                            </Text>
                             <Text style={{}}>{item.caption}</Text>
+                            <Text style={{}}>Menşei : {item.origin}</Text>
+                            <Text style={{}}>GTİP No : {item.gtipNo}</Text>
+                            <Text style={{}}>Durumu : {item.condition}</Text>
                         </View>
                         <Text
                             style={{
@@ -497,12 +473,11 @@ const Terms = ({ doc }) => (
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
             <Text style={{ flexBasis: '15%', ...styles.label }}>GARANTİ</Text>
             <View>
-
-            <Text>{doc.warranty}</Text>
-            <Text style={{ color: 'grey', fontSize: 8 }}>
-                Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
-                kapsamında değerlendirilmez.
-            </Text>
+                <Text>{doc.warranty}</Text>
+                <Text style={{ color: 'grey', fontSize: 8 }}>
+                    Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
+                    kapsamında değerlendirilmez.
+                </Text>
             </View>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
@@ -517,12 +492,14 @@ const Terms = ({ doc }) => (
 const Descriptions = ({ doc }) => (
     <View style={{ margin: '4px 0px' }}>
         {doc.isNewSign && (
-            <Text style={{ fontWeight: 'bold' }}>
+            <Text style={{ fontWeight: 'bold', color: 'grey' }}>
                 - Makineler Yeni ve Kullanılmamıştır.
             </Text>
         )}
         {doc.extraLine && (
-            <Text style={{ fontWeight: 'normal' }}>{doc.extraLine}</Text>
+            <Text style={{ fontWeight: 'normal', color: 'grey' }}>
+                {doc.extraLine}
+            </Text>
         )}
     </View>
 )

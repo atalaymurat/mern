@@ -122,13 +122,7 @@ const DocForm = ({ user }) => {
                                     <div className="font-semibold text-xl py-2 text-center">
                                         Proforma Oluşturma Formu
                                     </div>
-                                    <Form
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
-                                                e.preventDefault()
-                                            }
-                                        }}
-                                    >
+                                    <Form>
                                         <FormikControl
                                             control="input"
                                             type="text"
