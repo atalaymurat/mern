@@ -14,7 +14,7 @@ function PdfLinks({ doc }) {
                                 PDF Yükleniyor...
                             </div>
                         ) : error ? (
-                            'Error occurred'
+                            'Bir Hata Oluştu'
                         ) : (
                             <a
                                 href={url}
@@ -35,7 +35,7 @@ function PdfLinks({ doc }) {
                 </BlobProvider>
                 <Link
                     to={`/doc/pdf/${doc._id}`}
-                    target='_blank'
+                    target="_blank"
                     className="flex-1 w-full"
                     rel="noopener noreferrer"
                 >

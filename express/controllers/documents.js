@@ -29,4 +29,13 @@ module.exports = {
             res.status(200).json({ message: 'success', doc: document })
         } catch (err) {}
     },
+    destroy: async (req, res, next) => {
+        try {
+            let id = req.params.id
+            const doc = await Document.findByIdAndDelete(id)
+            res.status(200).json({ message: 'success', doc })
+        } catch (err) {
+            res.status(400).json({ message: 'error', error: err })
+        }
+    },
 }
