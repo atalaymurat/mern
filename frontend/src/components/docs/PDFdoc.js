@@ -23,7 +23,6 @@ Font.register({
     ],
 })
 
-
 const styles = StyleSheet.create({
     page: {
         fontFamily: 'Ubuntu',
@@ -363,10 +362,8 @@ const TotalsTable = ({ doc }) => {
                   { label: 'net toplam', value: formPrice(doc.netPrice) },
               ]
             : []),
-        ...(hasDiscount && !hasTax 
-            ? [
-                  { label: 'i̇ndirim', value: formPrice(doc.discount) },
-              ]
+        ...(hasDiscount && !hasTax
+            ? [{ label: 'i̇ndirim', value: formPrice(doc.discount) }]
             : []),
         ...(hasTax
             ? [
@@ -391,9 +388,17 @@ const TotalsTable = ({ doc }) => {
                 flexDirection: 'row',
             }}
         >
-            <View style={{ marginTop: '12px', overflow: 'hidden', color: "grey", fontSize: 9 }}>
+            <View
+                style={{
+                    marginTop: '12px',
+                    overflow: 'hidden',
+                    color: 'grey',
+                    fontSize: 9,
+                }}
+            >
                 <Text>
-                    - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir.
+                    - Özellikle belirtilmedikçe fiyatlarımıza KDV dahil
+                    değildir.
                 </Text>
                 <Text>- Seri Numaralar faturada belirtilecektir.</Text>
                 <Text>- CE belgesine haizdir.</Text>
@@ -401,14 +406,15 @@ const TotalsTable = ({ doc }) => {
                     - G.T.I.P kod uyuşmazlıklarından, satıcı sorumlu tutulamaz.
                 </Text>
                 <Text>
-                    - Kurulum için gerekli elektrik ,basınçlı hava, toz emici ve diğer
+                    - Kurulum için gerekli elektrik ,basınçlı hava, toz emici ve
+                    diğer
                 </Text>
                 <Text>
-                    altyapı gereksinimleri müşteri tarandan
-                    hazırlanacaktır.
+                    altyapı gereksinimleri müşteri tarandan hazırlanacaktır.
                 </Text>
                 <Text>
-                    - Mucbir nedenler veya üretici kaynaklı gecikmelerden satıcı sorumlu değildir.
+                    - Mucbir nedenler veya üretici kaynaklı gecikmelerden satıcı
+                    sorumlu değildir.
                 </Text>
             </View>
             <View
@@ -473,28 +479,35 @@ const Terms = ({ doc }) => (
         </Text>
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
             <Text style={{ flexBasis: '15%', ...styles.label }}>
-                TESLİM SÜRESİ :
+                TESLİM SÜRESİ
             </Text>
-            <Text>{doc.deliveryDate}</Text>
-            <Text style={{ color: "grey"}}>(Sipariş avansının, tamamının alınmasından sonra)</Text>
+            <View>
+                <Text>{doc.deliveryDate}</Text>
+                <Text style={{ color: 'grey', fontSize: 8 }}>
+                    Sipariş avansının, tamamının alınmasından sonra.
+                </Text>
+            </View>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
             <Text style={{ flexBasis: '15%', ...styles.label }}>
-                TESLİM YERİ :
+                TESLİM YERİ
             </Text>
             <Text>{doc.deliveryTerms}</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
-            <Text style={{ flexBasis: '15%', ...styles.label }}>GARANTİ :</Text>
+            <Text style={{ flexBasis: '15%', ...styles.label }}>GARANTİ</Text>
+            <View>
+
             <Text>{doc.warranty}</Text>
-            <Text style={{color: "grey"}}>
-                (Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
-                kapsamında değerlendirilmez)
+            <Text style={{ color: 'grey', fontSize: 8 }}>
+                Kullanıcı kaynaklı hatalar ve sarf malzemeleri garanti
+                kapsamında değerlendirilmez.
             </Text>
+            </View>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 2px' }}>
             <Text style={{ flexBasis: '15%', ...styles.label }}>
-                ÖDEME ŞEKLİ :
+                ÖDEME ŞEKLİ
             </Text>
             <Text>{doc.paymentTerms}</Text>
         </View>
@@ -509,10 +522,7 @@ const Descriptions = ({ doc }) => (
             </Text>
         )}
         {doc.extraLine && (
-            <Text style={{ fontWeight: 'normal' }}>
-                {doc.extraLine}
-            </Text>
-
+            <Text style={{ fontWeight: 'normal' }}>{doc.extraLine}</Text>
         )}
     </View>
 )
@@ -532,46 +542,41 @@ const BankInfo = () => (
         </Text>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
             <Text style={{ flexBasis: '20%', ...styles.label }}>
-                SATICI FİRMA :
+                SATICI FİRMA
             </Text>
             <Text>VMM VAROL MAKINA SAN. ve TİC. LTD. ŞTİ.</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>ADRES :</Text>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>ADRES</Text>
             <Text>
-                Esenkent Mah. Dudullu OSB, Yücesoy Sokak No: 16/1 Ümraniye / İstanbul
+                Esenkent Mah. Dudullu OSB, Yücesoy Sokak No: 16/1 Ümraniye /
+                İstanbul
             </Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>BANKA : </Text>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>BANKA</Text>
             <Text>T.C. ZİRAAT BANKASI A.Ş</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
             <Text style={{ flexBasis: '20%', ...styles.label }}>
-                ŞUBE / ŞUBE KODU :{' '}
+                ŞUBE / ŞUBE KODU
             </Text>
             <Text>2248-ALTUNİZADE TİCARİ ŞUBESİ</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>
-                SWIFT NO :
-            </Text>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>SWIFT NO</Text>
             <Text>TCZBTR2A</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>TL IBAN :</Text>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>TL IBAN</Text>
             <Text>TR31 0001 0022 4850 9109 2950 29</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>
-                EURO IBAN :
-            </Text>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>EURO IBAN</Text>
             <Text>TR26 0001 0022 4850 9109 2950 22</Text>
         </View>
         <View style={{ ...styles.flexRow, padding: '2px 4px' }}>
-            <Text style={{ flexBasis: '20%', ...styles.label }}>
-                USD IBAN :
-            </Text>
+            <Text style={{ flexBasis: '20%', ...styles.label }}>USD IBAN</Text>
             <Text>TR69 0001 0022 4850 9109 2950 24</Text>
         </View>
     </View>
