@@ -25,11 +25,11 @@ const Terms = ({ doc }) => {
         },
         {
             title: 'AÇIKLAMALAR',
-            content: `${doc.extraLine}`,
+            content: `${doc.extraLine}
+            ${doc.isNewSign && 'Makineler yeni ve kullanılmamıştır.'}`,
             footer: `- Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir. - Seri Numaralar faturada belirtilecektir. - CE belgesine haizdir.
             - G.T.I.P kod uyuşmazlıklarından, satıcı sorumlu tutulamaz.- Mücbir nedenler veya üretici kaynaklı gecikmelerden satıcı sorumlu değildir.
-            - Makinenin çalışması için zorunlu olan parça ve aksesuarlar dışında İlave parça ve aksesuar bulunmamaktadır.
-            `,
+            - Makinenin çalışması için zorunlu olan parça ve aksesuarlar dışında İlave parça ve aksesuar bulunmamaktadır.`,
         },
     ]
 
@@ -67,11 +67,15 @@ const Terms = ({ doc }) => {
                             <Text style={{ ...styles.label }}>
                                 {item.title}
                             </Text>
-                            <View style={{ marginVertical: 'auto' }}>
+                            <View
+                                style={{
+                                    marginVertical: 'auto',
+                                }}
+                            >
                                 <Text>{item.content}</Text>
                                 {item.footer && (
                                     <Text
-                                        style={{ color: 'grey', fontSize: 8, paddingTop: "4px" }}
+                                        style={{ color: 'grey', fontSize: 8 }}
                                     >
                                         {item.footer}
                                     </Text>

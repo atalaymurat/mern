@@ -6,11 +6,13 @@ import PDFdoc from '../../components/docs/PDFdoc'
 function PdfLinks({ doc }) {
     return (
         <div className="flex flex-col w-full">
-            <div className="flex flex-row mb-4">
+            <div className="flex flex-row mb-4 w-full">
                 <BlobProvider document={<PDFdoc doc={doc} />}>
                     {({ blob, url, loading, error }) =>
                         loading ? (
-                            'Loading PDF...'
+                            <div className="btn-green flex-1">
+                                PDF Yükleniyor...
+                            </div>
                         ) : error ? (
                             'Error occurred'
                         ) : (
@@ -26,12 +28,17 @@ function PdfLinks({ doc }) {
                                     .slice(0, 17)
                                     .toUpperCase()}
                             >
-                                PDF İNDİR
+                                PDF İndir
                             </a>
                         )
                     }
                 </BlobProvider>
-                <Link to={`/doc/pdf/${doc._id}`} className="flex-1 w-full">
+                <Link
+                    to={`/doc/pdf/${doc._id}`}
+                    target='_blank'
+                    className="flex-1 w-full"
+                    rel="noopener noreferrer"
+                >
                     <button className="btn-purple w-full">PDF Göster</button>
                 </Link>
             </div>
