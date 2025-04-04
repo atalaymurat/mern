@@ -1,6 +1,6 @@
 import React from 'react'
 import PdfLinks from './PdfLinks'
-import { formPrice } from '../../lib/helpers'
+import { formPrice, localeDate } from '../../lib/helpers'
 import { Link } from 'react-router-dom'
 
 const Doc = ({ doc }) => {
@@ -18,7 +18,7 @@ const Doc = ({ doc }) => {
         { label: 'Teslim süresi', value: doc.deliveryDate },
         { label: 'Teslim Yeri', value: doc.deliveryTerms },
         { label: 'Garanti', value: doc.warranty },
-        { label: 'Tarih', value: doc.docDate },
+        { label: 'Tarih', value: localeDate(doc.docDate) },
     ]
     return (
         <>

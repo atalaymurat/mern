@@ -45,7 +45,9 @@ function Docs() {
                         </button>
                     </Link>
                 </div>
-                <div className="font-semibold text-lg my-4 px-2">Belgeler</div>
+                <div className="font-semibold text-xl my-4 px-2">
+                    Proformalar
+                </div>
 
                 <div className="grid grid-cols-4 bg-black text-white font-bold mb-1">
                     <div className="border-x px-1">Kod</div>
@@ -70,7 +72,8 @@ function Docs() {
                                 </div>
                             </Link>
                             <div className="text-sm px-1 col-span-2">
-                                {doc.customer}
+                                <div>{doc.customer}</div>
+                                <div>{doc.address}</div>
                             </div>
                             <div className="px-1">
                                 <div>
