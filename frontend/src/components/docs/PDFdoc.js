@@ -18,12 +18,29 @@ Font.register({
   ],
 });
 
+const capitalize = (str) =>
+  str
+    ? str
+        .split("\n") // önce satır satır ayır
+        .map((line) =>
+          line
+            .split(" ")
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            )
+            .join(" ")
+        )
+        .join("\n")
+    : "";
+
 const PDFdoc = ({ doc }) => {
   if (!doc) {
     return <IsLoading />;
   }
 
   if (doc) {
+    const { docType } = doc;
     return (
       <Document author="varol" producer="varol" creator="varol">
         <Page size="A4" dpi="72" style={styles.page}>
@@ -33,7 +50,7 @@ const PDFdoc = ({ doc }) => {
             <PriceTable doc={doc} />
             {doc.showTotals && <TotalsTable doc={doc} />}
             <Terms doc={doc} />
-            <BankInfo doc={doc} />
+            {(docType === "PRO" || docType === "SOZ") && <BankInfo doc={doc} />}
           </View>
         </Page>
       </Document>
@@ -50,14 +67,33 @@ const Customer = ({ doc }) => (
     <View style={styles.flexCol}>
       {/* Full-width: Firma */}
       <View style={styles.fullWidthRow}>
-        <Text style={{ ...styles.label, flexBasis: "9%" }}>Firma :</Text>
-        <Text>{doc.customer}</Text>
+        <Text style={{ ...styles.label, flexBasis: "9%" }}>Firma</Text>
+
+        <Text
+          style={{
+            flexBasis: "91%", // Take remaining space
+            whiteSpace: "nowrap", // Prevent wrapping
+            overflow: "hidden", // Hide overflow
+            textOverflow: "ellipsis", // May not work visually in all renderers
+          }}
+        >
+          {capitalize(doc.customer)}
+        </Text>
       </View>
 
       {/* Full-width: Adres */}
       <View style={styles.fullWidthRow}>
-        <Text style={{ ...styles.label, flexBasis: "9%" }}>Adres :</Text>
-        <Text>{doc.address}</Text>
+        <Text style={{ ...styles.label, flexBasis: "9%" }}>Adres</Text>
+        <Text
+          style={{
+            flexBasis: "91%", // Take remaining space
+            whiteSpace: "nowrap", // Prevent wrapping
+            overflow: "hidden", // Hide overflow
+            textOverflow: "ellipsis", // May not work visually in all renderers
+          }}
+        >
+          {capitalize(doc.address)}
+        </Text>
       </View>
 
       {/* Two-column layout */}
@@ -65,31 +101,49 @@ const Customer = ({ doc }) => (
         {/* Left Column (60%) */}
         <View style={{ width: "60%" }}>
           <View style={styles.flexRow}>
-            <Text style={{ ...styles.label, flexBasis: "14.4%" }}>
-              İlgili :
-            </Text>
-            <Text>{doc.person}</Text>
+            {doc.person && (
+              <>
+                <Text style={{ ...styles.label, flexBasis: "14.4%" }}>
+                  İlgili
+                </Text>
+                <Text>Sn. {capitalize(doc.person)}</Text>
+              </>
+            )}
           </View>
           <View style={styles.flexRow}>
-            <Text style={{ ...styles.label, flexBasis: "14.4%" }}>
-              Telefon :
-            </Text>
-            <Text>{doc.phone}</Text>
+            {doc.phone && (
+              <>
+                <Text style={{ ...styles.label, flexBasis: "14.4%" }}>
+                  Telefon
+                </Text>
+                <Text>{doc.phone}</Text>
+              </>
+            )}
           </View>
         </View>
 
         {/* Right Column (40%) */}
         <View style={{ width: "40%" }}>
           <View style={styles.flexRow}>
-            <Text style={{ ...styles.label, flexBasis: "25%" }}>
-              Vergi No :
-            </Text>
-            <Text>{doc.vd}</Text>
-            <Text>{doc.vatNo}</Text>
+            {doc.vd && (
+              <>
+                <Text style={{ ...styles.label, flexBasis: "25%" }}>
+                  Vergi No
+                </Text>
+                <Text>{capitalize(doc.vd)}</Text>
+                <Text>{doc.vatNo}</Text>
+              </>
+            )}
           </View>
           <View style={styles.flexRow}>
-            <Text style={{ ...styles.label, flexBasis: "25%" }}>Eposta :</Text>
-            <Text>{doc.email}</Text>
+            {doc.email && (
+              <>
+                <Text style={{ ...styles.label, flexBasis: "25%" }}>
+                  Eposta
+                </Text>
+                <Text>{doc.email}</Text>
+              </>
+            )}
           </View>
         </View>
       </View>
@@ -110,7 +164,7 @@ const Header = ({ doc }) => {
         <Image
           src={logoBase64}
           style={{
-            height: "70px",
+            height: "80px",
             width: "auto",
             objectFit: "contain",
           }}
@@ -126,12 +180,30 @@ const Header = ({ doc }) => {
               flexBasis: "50%",
             }}
           >
-            Tarih :
+            Tarih
           </Text>
           <Text style={{ ...styles.item, flexBasis: "50%" }}>
             {localeDate(doc.docDate)}
           </Text>
         </View>
+        {doc.docType !== "SOZ" && (
+          <>
+            <View style={{ ...styles.flexRow }}>
+              <Text
+                style={{
+                  ...styles.item,
+                  ...styles.label,
+                  flexBasis: "50%",
+                }}
+              >
+                Geçerli
+              </Text>
+              <Text style={{ ...styles.item, flexBasis: "50%" }}>
+                {localeDate(doc.validDate)}
+              </Text>
+            </View>
+          </>
+        )}
         <View style={{ ...styles.flexRow }}>
           <Text
             style={{
@@ -140,21 +212,7 @@ const Header = ({ doc }) => {
               flexBasis: "50%",
             }}
           >
-            Geçerli :
-          </Text>
-          <Text style={{ ...styles.item, flexBasis: "50%" }}>
-            {localeDate(doc.validDate)}
-          </Text>
-        </View>
-        <View style={{ ...styles.flexRow }}>
-          <Text
-            style={{
-              ...styles.item,
-              ...styles.label,
-              flexBasis: "50%",
-            }}
-          >
-            Belge No :
+            Belge No
           </Text>
           <Text style={{ ...styles.item, flexBasis: "50%" }}>
             {doc.docCode}
@@ -230,8 +288,10 @@ const PriceTable = ({ doc }) => {
                 padding: "2px 2px",
               }}
             >
-              <Text style={{ fontWeight: "bold" }}>{item.desc}</Text>
-              <Text style={{ color: "grey" }}>{item.caption}</Text>
+              <Text style={{ fontWeight: "bold" }}>
+                {item.desc.toUpperCase()}
+              </Text>
+              <Text style={{ color: "grey" }}>{capitalize(item.caption)}</Text>
               <View style={{ ...styles.flexRow }}>
                 <Text
                   style={{
@@ -239,7 +299,7 @@ const PriceTable = ({ doc }) => {
                     color: "grey",
                   }}
                 >
-                  Menşei :
+                  Menşei
                 </Text>
                 <Text style={{}}>{item.origin}</Text>
               </View>
@@ -251,7 +311,7 @@ const PriceTable = ({ doc }) => {
                       color: "grey",
                     }}
                   >
-                    GTİP No :
+                    GTİP No
                   </Text>
                   <Text>{item.gtipNo}</Text>
                 </View>
@@ -263,7 +323,7 @@ const PriceTable = ({ doc }) => {
                       color: "grey",
                     }}
                   >
-                    Durumu :
+                    Durumu
                   </Text>
                   <Text>{item.condition}</Text>
                 </View>

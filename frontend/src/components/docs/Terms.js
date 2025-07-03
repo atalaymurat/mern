@@ -1,31 +1,47 @@
 import { Text, View } from '@react-pdf/renderer'
 import { styles } from './Styles'
 
+
+
+const capitalize = (str) =>
+  str
+    ? str
+        .split("\n") // önce satır satır ayır
+        .map((line) =>
+          line
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(" ")
+        )
+        .join("\n")
+    : "";
+
+
 const Terms = ({ doc }) => {
     const fieldValues = [
         {
             title: 'TESLİM SÜRESİ',
-            content: doc.deliveryDate,
-            footer: 'Sipariş Avansının Tamamının Alınmasından Sonra',
+            content: capitalize(doc.deliveryDate),
+            footer: 'Sipariş Avansının Tamamının Alınmasından Sonra Gecerli Olmak Uzere',
         },
         {
             title: 'TESLİM YERİ',
-            content: doc.deliveryTerms,
+            content: capitalize(doc.deliveryTerms),
             footer: '',
         },
         {
             title: 'GARANTİ',
-            content: doc.warranty,
-            footer: 'Sarf malzemeleri garanti kapsamında değerlendirilmez',
+            content: capitalize(doc.warranty),
+            footer: 'Sarf malzemeleri garanti kapsamında değerlendirilmez. Sebeke Elektrik Sorunlari Kaynakli Elektriksel Arizalar Garanti Kapsami Disindadir.',
         },
         {
             title: 'ÖDEME ŞEKLİ',
-            content: doc.paymentTerms,
+            content: capitalize(doc.paymentTerms),
             footer: '',
         },
         {
             title: 'AÇIKLAMALAR',
-            content: `${doc.extraLine}
+            content: `${capitalize(doc.extraLine)}
             ${doc.isNewSign ? 'Makineler yeni ve kullanılmamıştır.' : ""}`,
             footer: `- Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir. - Seri Numaralar faturada belirtilecektir. - CE belgesine haizdir.
             - G.T.I.P kod uyuşmazlıklarından, satıcı sorumlu tutulamaz.- Mücbir nedenler veya üretici kaynaklı gecikmelerden satıcı sorumlu değildir.
