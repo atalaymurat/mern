@@ -26,7 +26,7 @@ const Terms = ({ doc }) => {
         {
             title: 'AÇIKLAMALAR',
             content: `${doc.extraLine}
-            ${doc.isNewSign && 'Makineler yeni ve kullanılmamıştır.'}`,
+            ${doc.isNewSign ? 'Makineler yeni ve kullanılmamıştır.' : ""}`,
             footer: `- Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir. - Seri Numaralar faturada belirtilecektir. - CE belgesine haizdir.
             - G.T.I.P kod uyuşmazlıklarından, satıcı sorumlu tutulamaz.- Mücbir nedenler veya üretici kaynaklı gecikmelerden satıcı sorumlu değildir.
             - Makinenin çalışması için zorunlu olan parça ve aksesuarlar dışında İlave parça ve aksesuar bulunmamaktadır.`,
@@ -104,7 +104,7 @@ const Terms = ({ doc }) => {
                     fontWeight: 'bold',
                     padding: '2px 4px',
                     borderBottom: '1px solid black',
-                    color: '#e30713',
+                    color: '#162a42',
                 }}
             >
                 TESLİM ŞARTLARI

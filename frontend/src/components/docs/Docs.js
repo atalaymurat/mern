@@ -67,7 +67,7 @@ function Docs() {
                                     </div>
                                     <div>
                                         {localeDate(doc.docDate)}{' '}
-                                        {doc.user.displayName}
+                                        {doc.user?.displayName}
                                     </div>
                                 </div>
                             </Link>

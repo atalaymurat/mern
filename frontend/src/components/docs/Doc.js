@@ -12,7 +12,7 @@ const Doc = ({ doc }) => {
         { label: 'Email', value: doc.email },
         { label: 'Veri Dairesi', value: doc.vd },
         { label: 'Vergi No', value: doc.vatNo },
-        { label: 'Oluşturan', value: doc.user?.displayName },
+        { label: 'Oluşturan', value: doc.user?.displayName  },
         { label: 'Versiyon', value: doc.version },
         { label: 'Ödeme Şekli', value: doc.paymentTerms },
         { label: 'Teslim süresi', value: doc.deliveryDate },

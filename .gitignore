@@ -1,4 +1,5 @@
 ./express/.env
+./frontend/.env
 ./express/node_modules
 .env
 node_modules
