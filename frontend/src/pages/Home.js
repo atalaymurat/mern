@@ -75,6 +75,21 @@ function Home() {
                                 Proforma Oluştur
                             </button>
                         </Link>
+                        <Link className="w-1/2" to="/doc/new/tek">
+                            <button className="btn-purple my-2 w-full">
+                                Fiyat Teklifi Oluştur
+                            </button>
+                        </Link>
+                        <Link className="w-1/2" to="/doc/new/soz">
+                            <button className="btn-purple my-2 w-full">
+                                Sozlesme Oluştur
+                            </button>
+                        </Link>
+                        <Link className="w-1/2" to="/doc/new/sip">
+                            <button className="btn-purple my-2 w-full">
+                                Siparis Formu Oluştur
+                            </button>
+                        </Link>
                     </div>
                     {/* 
                     

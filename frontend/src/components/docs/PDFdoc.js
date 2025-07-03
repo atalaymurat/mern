@@ -87,9 +87,7 @@ const Customer = ({ doc }) => (
             <Text>{doc.vatNo}</Text>
           </View>
           <View style={styles.flexRow}>
-            <Text style={{ ...styles.label, flexBasis: "25%" }}>
-              Eposta :
-            </Text>
+            <Text style={{ ...styles.label, flexBasis: "25%" }}>Eposta :</Text>
             <Text>{doc.email}</Text>
           </View>
         </View>
@@ -98,66 +96,78 @@ const Customer = ({ doc }) => (
   </View>
 );
 
-const Header = ({ doc }) => (
-  <View style={styles.container}>
-    <Image
-      src="/varolLogo.png"
-      style={{
-        height: "70px",
-        width: "150px",
-        flexBasis: "25%",
-      }}
-    />
-    <Text style={styles.heading}>PROFORMA FATURA</Text>
-    <View style={{ ...styles.flexCol, flexBasis: "25%" }}>
-      <View style={{ ...styles.flexRow }}>
-        <Text
+const Header = ({ doc }) => {
+  const headerTitles = {
+  TEK: "Fiyat Teklifi",
+  PRO: "Proforma Fatura",
+  SOZ: "Satış Sözleşmesi",
+  SIP: "Sipariş Formu",
+};
+  return (
+    <View style={styles.container}>
+      <View style={{ width: "25%", alignItems: "flex-start" }}>
+        <Image
+          src="/varolLogo.png"
           style={{
-            ...styles.item,
-            ...styles.label,
-            flexBasis: "50%",
+            height: "70px",
+            width: "auto",
+            objectFit: "contain",
           }}
-        >
-          Tarih :
-        </Text>
-        <Text style={{ ...styles.item, flexBasis: "50%" }}>
-          {localeDate(doc.docDate)}
-        </Text>
+        />
       </View>
-      <View style={{ ...styles.flexRow }}>
-        <Text
-          style={{
-            ...styles.item,
-            ...styles.label,
-            flexBasis: "50%",
-          }}
-        >
-          Geçerli :
-        </Text>
-        <Text style={{ ...styles.item, flexBasis: "50%" }}>
-          {localeDate(doc.validDate)}
-        </Text>
-      </View>
-      <View style={{ ...styles.flexRow }}>
-        <Text
-          style={{
-            ...styles.item,
-            ...styles.label,
-            flexBasis: "50%",
-          }}
-        >
-          Belge No :
-        </Text>
-        <Text style={{ ...styles.item, flexBasis: "50%" }}>{doc.docCode}</Text>
-      </View>
-      <View style={{ ...styles.flexRow }}>
-        <Text style={{ width: "100%", padding: "2px 0px", color: "grey" }}>
-          www.ufukmakina.com
-        </Text>
+      <Text style={styles.heading}>{headerTitles[doc.docType]}</Text>
+      <View style={{ ...styles.flexCol, flexBasis: "25%" }}>
+        <View style={{ ...styles.flexRow }}>
+          <Text
+            style={{
+              ...styles.item,
+              ...styles.label,
+              flexBasis: "50%",
+            }}
+          >
+            Tarih :
+          </Text>
+          <Text style={{ ...styles.item, flexBasis: "50%" }}>
+            {localeDate(doc.docDate)}
+          </Text>
+        </View>
+        <View style={{ ...styles.flexRow }}>
+          <Text
+            style={{
+              ...styles.item,
+              ...styles.label,
+              flexBasis: "50%",
+            }}
+          >
+            Geçerli :
+          </Text>
+          <Text style={{ ...styles.item, flexBasis: "50%" }}>
+            {localeDate(doc.validDate)}
+          </Text>
+        </View>
+        <View style={{ ...styles.flexRow }}>
+          <Text
+            style={{
+              ...styles.item,
+              ...styles.label,
+              flexBasis: "50%",
+            }}
+          >
+            Belge No :
+          </Text>
+          <Text style={{ ...styles.item, flexBasis: "50%" }}>
+            {doc.docCode}
+          </Text>
+        </View>
+        <View style={{ ...styles.flexRow }}>
+          <Text style={{ width: "100%", padding: "2px 0px", color: "grey" }}>
+            www.ufukmakina.com
+          </Text>
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 const PriceTable = ({ doc }) => {
   const { lineItems } = doc;
