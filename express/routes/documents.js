@@ -11,6 +11,7 @@ router
   .get('/',passportJWT, documentsController.index)
   .get('/:id',passportJWT, documentsController.show)
   .post('/',passportJWT, documentsController.create)
+  .patch('/:id',passportJWT, documentsController.update)
   .delete('/:id',passportJWT, documentsController.destroy)
 
 module.exports = router

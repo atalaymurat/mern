@@ -13,21 +13,40 @@ module.exports = {
 
     create: async (req, res, next) => {
         const data = req.body
-        console.log('CREATE DOC *** : ', data)
         const document = new Document(data)
         await document.save()
 
-        res.status(200).json({ message: 'success', doc: document })
+        res.status(200).json({ message: 'Document Created', doc: document })
     },
     show: async (req, res, next) => {
         try {
             console.log('REQUEST SHOW:', req.params)
             const { id } = req.params
             const document = await Document.findById(id).populate('user')
-            console.log('Document Find : ', document)
 
-            res.status(200).json({ message: 'success', doc: document })
+            res.status(200).json({ message: 'Document Found', doc: document })
         } catch (err) {}
+    },
+    update: async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const data = req.body
+
+            console.log('DATA FROM FORM *** : ', data)
+
+            const document = await Document.findById(id)
+
+            if (!document) {
+                return res.status(404).json({ message: 'Document not found', success: false })
+            }
+            // Update the document with the new data
+            document.set(data)
+            await document.save()
+            
+            res.status(200).json({ message: 'Document Updated', doc: document, success: true })
+        } catch (err) {
+            res.status(400).json({ message: 'error', error: err })
+        }
     },
     destroy: async (req, res, next) => {
         try {

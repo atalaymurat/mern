@@ -464,7 +464,7 @@ const BankInfo = ({ doc }) => (
     </Text>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>SATICI FİRMA</Text>
-      <Text>VAROL MAKINA SAN. ve TİC. LTD. ŞTİ.</Text>
+      <Text>VAROL MAKİNA SAN. ve TİC. LTD. ŞTİ.</Text>
     </View>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>ADRES</Text>
@@ -478,7 +478,7 @@ const BankInfo = ({ doc }) => (
       <Text style={{ flexBasis: "20%", ...styles.label }}>
         ŞUBE / ŞUBE KODU
       </Text>
-      <Text>0845-RAMİ/İSTABNUL ŞUBESİ</Text>
+      <Text>0845-RAMİ/İSTANBUL ŞUBESİ</Text>
     </View>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>SWIFT NO</Text>

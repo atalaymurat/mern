@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
 import FormikControl from "../formik/FormikControl";
 import axios from "axios";
@@ -6,8 +6,14 @@ import { GTIP_NUMBERS, CUR_TYPES } from "./helpers";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
-const DocForm = ({ user, docType }) => {
+const DocForm = ({ user, docType, doc }) => {
+  const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (doc) setEditMode(true);
+  }, [doc]);
+
   const INITIAL_VALUES = {
     docType: docType,
     customer: "",
@@ -95,13 +101,12 @@ const DocForm = ({ user, docType }) => {
     ),
   });
 
-  const editMode = false;
   return (
     <div>
       <Formik
         enableReinitialize
         validationSchema={validation}
-        initialValues={INITIAL_VALUES}
+        initialValues={doc || INITIAL_VALUES}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           if (!editMode) {
             const { data } = await axios.post("/doc", values, {
@@ -112,6 +117,22 @@ const DocForm = ({ user, docType }) => {
             resetForm();
             navigate(`/doc`);
           }
+          if (editMode) {
+            try {
+            await axios.patch(`/doc/${doc._id}`, values, {
+              withCredentials: true,
+            });
+
+            } catch (err) {
+              console.error("Error updating document:", err);
+              setSubmitting(false);
+              return;
+            }
+
+            setSubmitting(false);
+            resetForm();
+            navigate(`/doc/${doc._id}`);
+          } else return;
         }}
       >
         {({ values, isSubmitting }) => {
