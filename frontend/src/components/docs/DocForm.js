@@ -7,6 +7,11 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const DocForm = ({ user, docType, doc }) => {
+  const lastVersion =
+    doc && Array.isArray(doc.versions) && doc.versions.length > 0
+      ? doc.versions[doc.versions.length - 1]
+      : null;
+
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
 
@@ -14,39 +19,49 @@ const DocForm = ({ user, docType, doc }) => {
     if (doc) setEditMode(true);
   }, [doc]);
 
-  const INITIAL_VALUES = {
-    docType: docType,
-    customer: "",
-    person: "",
-    address: "",
-    email: "",
-    phone: "",
-    vd: "",
-    vatNo: "",
-    currency: "",
-    lineItems: [
-      {
-        position: 1,
-        condition: "",
-        origin: "",
-        gtipNo: "",
-        desc: "",
-        caption: "",
-        quantity: "",
-        price: "",
-      },
-    ],
-    user: user?._id || null,
-    paymentTerms: "",
-    deliveryDate: "",
-    warranty: "12 Ay",
-    kdv: 20,
-    discount: "",
-    deliveryTerms: "İstanbul Depodan Teslim",
-    isNewSign: false,
-    showTotals: true,
-    extraLine: "",
-  };
+  const EDIT_VALUES = lastVersion
+    ? {
+        ...lastVersion,
+        docType: docType,
+        user: user?._id,
+      }
+    : null;
+
+  const INITIAL_VALUES = editMode
+    ? EDIT_VALUES
+    : {
+        docType: docType,
+        customer: "",
+        person: "",
+        address: "",
+        email: "",
+        phone: "",
+        vd: "",
+        vatNo: "",
+        currency: "",
+        lineItems: [
+          {
+            position: 1,
+            condition: "",
+            origin: "",
+            gtipNo: "",
+            desc: "",
+            caption: "",
+            quantity: "",
+            price: "",
+          },
+        ],
+        user: user?._id || null,
+        paymentTerms: "",
+        deliveryDate: "",
+        warranty: "__ Ay",
+        kdv: 20,
+        discount: "",
+        deliveryTerms: "İstanbul Depodan",
+        isNewSign: false,
+        showTotals: true,
+        extraLine: "",
+      };
 
   const headerTitles = {
     PRO: "Proforma Fatura Oluştur",
@@ -106,7 +121,7 @@ const DocForm = ({ user, docType, doc }) => {
       <Formik
         enableReinitialize
         validationSchema={validation}
-        initialValues={doc || INITIAL_VALUES}
+        initialValues={INITIAL_VALUES}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           if (!editMode) {
             const { data } = await axios.post("/doc", values, {
@@ -119,10 +134,9 @@ const DocForm = ({ user, docType, doc }) => {
           }
           if (editMode) {
             try {
-            await axios.patch(`/doc/${doc._id}`, values, {
-              withCredentials: true,
-            });
-
+              await axios.patch(`/doc/${doc._id}`, values, {
+                withCredentials: true,
+              });
             } catch (err) {
               console.error("Error updating document:", err);
               setSubmitting(false);

@@ -18,7 +18,7 @@ const userSchema = new Schema({
   displayName: String,
   active: { type: Boolean, default: false },
   group: String,
-  company: String,
+  company: { type: Schema.Types.ObjectId, ref: "Company" }
 });
 userSchema.set("timestamps", true);
 

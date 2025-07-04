@@ -34,28 +34,27 @@ const capitalize = (str) =>
         .join("\n")
     : "";
 
-const PDFdoc = ({ doc }) => {
-  if (!doc) {
-    return <IsLoading />;
-  }
+const PDFdoc = ({ doc, version }) => {
+  if (!doc) return null;
+  const selectedVersion = doc.versions[Number(version) - 1]
+  const { docType } = doc;
 
-  if (doc) {
-    const { docType } = doc;
-    return (
-      <Document author="varol" producer="varol" creator="varol">
-        <Page size="A4" dpi="72" style={styles.page}>
-          <View style={{ margin: "10px 20px" }}>
-            <Header doc={doc} />
-            <Customer doc={doc} />
-            <PriceTable doc={doc} />
-            {doc.showTotals && <TotalsTable doc={doc} />}
-            <Terms doc={doc} />
-            {(docType === "PRO" || docType === "SOZ") && <BankInfo doc={doc} />}
-          </View>
-        </Page>
-      </Document>
-    );
-  }
+  return (
+    <Document author="varol" producer="varol" creator="varol">
+      <Page size="A4" dpi="72" style={styles.page}>
+        <View style={{ margin: "10px 20px" }}>
+          <Header doc={doc} version={selectedVersion} />
+          <Customer doc={selectedVersion} />
+          <PriceTable doc={selectedVersion} />
+          {selectedVersion.showTotals && <TotalsTable doc={selectedVersion} />}
+          <Terms doc={selectedVersion} />
+          {(docType === "PRO" || docType === "SOZ") && (
+            <BankInfo doc={selectedVersion} />
+          )}
+        </View>
+      </Page>
+    </Document>
+  );
 };
 
 export default PDFdoc;
@@ -151,7 +150,7 @@ const Customer = ({ doc }) => (
   </View>
 );
 
-const Header = ({ doc }) => {
+const Header = ({ doc, version }) => {
   const headerTitles = {
     TEK: "Fiyat Teklifi",
     PRO: "Proforma Fatura",
@@ -183,7 +182,7 @@ const Header = ({ doc }) => {
             Tarih
           </Text>
           <Text style={{ ...styles.item, flexBasis: "50%" }}>
-            {localeDate(doc.docDate)}
+            {localeDate(version.docDate)}
           </Text>
         </View>
         {doc.docType !== "SOZ" && (
@@ -199,7 +198,7 @@ const Header = ({ doc }) => {
                 Geçerli
               </Text>
               <Text style={{ ...styles.item, flexBasis: "50%" }}>
-                {localeDate(doc.validDate)}
+                {localeDate(version.validDate)}
               </Text>
             </View>
           </>
@@ -261,7 +260,7 @@ const PriceTable = ({ doc }) => {
             Toplam Fiyat
           </Text>
         </View>
-        {lineItems.map((item, i) => (
+        {lineItems?.map((item, i) => (
           <View
             key={i}
             style={{

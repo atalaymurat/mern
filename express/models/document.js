@@ -1,52 +1,86 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const documentSchema = new Schema({
-  docCode: String, // dokuman kodu
-  docDate: { type: Date, default: Date.now }, // oluşturulduğu zaman
-  validDate: Date, // otomatik hesaplanacak
-  vd: String,
-  vatNo: String,
-  email: String,
-  phone: String,
-  docType: String, // preforma - teklif vb..
-  customer: String, // müşteri direk giriş sonra company ile gelecek
-  person: String,
-  address: String,
-  currency: String, // Teklif doviz birimi
-  lineItems: [
-    {
-      position: Number,
-      condition: String,
-      origin: String,
-      gtipNo: String,
-      desc: String,
-      caption: String,
-      quantity: Number,
-      price: Number,
-      totalPrice: Number,
+const documentVersionSchema = new Schema(
+  {
+    document: { type: Schema.Types.ObjectId, ref: "Document", required: true }, // Hangi Document'a ait
+    version: { type: Number, required: true }, // Versiyon numarası
+    docDate: { type: Date, default: Date.now },
+    validDate: Date,
+    vd: String,
+    vatNo: String,
+    email: String,
+    phone: String,
+    customer: String,
+    person: String,
+    address: String,
+    currency: String,
+    lineItems: [
+      {
+        position: Number,
+        condition: String,
+        origin: String,
+        gtipNo: String,
+        desc: String,
+        caption: String,
+        quantity: Number,
+        price: Number,
+        totalPrice: Number,
+      },
+    ],
+    paymentTerms: String,
+    deliveryDate: String,
+    deliveryTerms: String,
+    warranty: String,
+    totalPrice: Number,
+    discountPrice: Number,
+    netPrice: Number,
+    kdvPrice: Number,
+    grandTotal: Number,
+    kdv: Number,
+    discount: Number,
+    showTotals: Boolean,
+    isNewSign: Boolean,
+    extraLine: String,
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const defaultCompanyId = new mongoose.Types.ObjectId("67a4789d140cf1c1b6340a31");
+const documentSchema = new Schema(
+  {
+    docCode: { type: String, required: true, unique: true }, // Belge kodu, anahtar
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    docType: String,
+    company: {
+      type: Schema.Types.ObjectId,
+      ref: "Company",
+      required: true,
+      default: defaultCompanyId, // Burada default ObjectId atanıyor
     },
-  ],
-  user: { type: Schema.Types.ObjectId, ref: "User" },
-  version: { type: Number, default: 1 }, // her yeni kayıtta numara değişecek
-  paymentTerms: String, // ödeme şekli
-  deliveryDate: String, // teslim zamanı
-  deliveryTerms: String, // Teslim yeri ve şekli
-  warranty: String, // Garanti
-  totalPrice: Number,
-  discountPrice: Number,
-  netPrice: Number,
-  kdvPrice: Number,
-  grandTotal: Number,
-  kdv: Number,
-  discount: Number,
-  showTotals: Boolean,
-  isNewSign: Boolean,
-  extraLine: String,
+    version: { type: Number, default: 1 }, // Güncel versiyon numarası
+    versions: [{ type: Schema.Types.ObjectId, ref: "DocumentVersion" }], // Versiyonlar referansı
+  },
+  {
+    timestamps: true,
+  }
+);
+
+documentSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
+  try {
+    await DocumentVersion.deleteMany({ document: this._id });
+    next();
+  } catch(err) {
+    next(err);
+  }
 });
 
-documentSchema.set("timestamps", true);
-
 const Document = mongoose.model("Document", documentSchema);
+const DocumentVersion = mongoose.model(
+  "DocumentVersion",
+  documentVersionSchema
+);
 
-module.exports = Document;
+module.exports = { Document, DocumentVersion };

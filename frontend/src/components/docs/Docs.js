@@ -53,6 +53,7 @@ function Docs() {
           <div className="border-x px-1">Tutar</div>
         </div>
         {documents.map((doc, i) => {
+          const lastVersion = doc.versions.length > 0 ? doc.versions[doc.versions.length - 1] : []
           return (
             <div
               key={i}
@@ -64,17 +65,17 @@ function Docs() {
                     {doc.docType} {doc.docCode}
                   </div>
                   <div>
-                    {localeDate(doc.docDate)} {doc.user?.displayName}
+                    {localeDate(lastVersion.docDate)} {doc.user?.displayName}
                   </div>
                 </div>
               </Link>
               <div className="text-sm px-1 col-span-2">
-                <div>{doc.customer}</div>
-                <div>{doc.address}</div>
+                <div>{lastVersion.customer}</div>
+                <div>{lastVersion.address}</div>
               </div>
               <div className="px-1">
                 <div>
-                  {formPrice(doc.grandTotal)} {doc.currency}
+                  {formPrice(lastVersion.grandTotal)} {lastVersion.currency}
                 </div>
                 <div className="py-1 w-full flex flex-row">
                   <button
