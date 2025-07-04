@@ -29,7 +29,6 @@ function Edit() {
   return (
     <>
       <DocForm user={user} doc={doc} docType={doc.docType} />
-      <pre>{JSON.stringify(doc, null, 2)}</pre>
     </>
   );
 }

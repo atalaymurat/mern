@@ -163,10 +163,10 @@ const Header = ({ doc }) => {
       <View style={{ width: "25%", alignItems: "flex-start" }}>
         <Image
           src={logoBase64}
+          cache={false}
           style={{
-            height: "80px",
+            height: "80",
             width: "auto",
-            objectFit: "contain",
           }}
         />
       </View>
@@ -263,6 +263,7 @@ const PriceTable = ({ doc }) => {
         </View>
         {lineItems.map((item, i) => (
           <View
+            key={i}
             style={{
               ...styles.flexRow,
               gap: 0,

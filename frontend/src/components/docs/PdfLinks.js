@@ -1,22 +1,21 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BlobProvider } from "@react-pdf/renderer";
 import PDFdoc from "../../components/docs/PDFdoc";
 
 function PdfLinks({ doc }) {
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-row mb-4 w-full">
+      <div className="flex flex-row gap-2 mb-4 w-full">
         <BlobProvider document={<PDFdoc doc={doc} />}>
           {({ blob, url, loading, error }) =>
             loading ? (
-              <div className="btn-green flex-1">PDF Yükleniyor...</div>
+              <div className="btn-green">PDF Yükleniyor...</div>
             ) : error ? (
               "Bir Hata Oluştu"
             ) : (
               <a
                 href={url}
-                className="btn-green flex-1"
+                className="btn-green w-full"
                 download={encodeURIComponent(
                   `${doc.docCode}_${doc.docType}_${doc?.customer?.replace(/\s/g, "")}`
                 )
@@ -31,10 +30,16 @@ function PdfLinks({ doc }) {
         <Link
           to={`/doc/pdf/${doc._id}`}
           target="_blank"
-          className="flex-1 w-full"
+          className="w-full"
           rel="noopener noreferrer"
         >
           <button className="btn-purple w-full">PDF Göster</button>
+        </Link>
+        <Link
+          to={`/doc/edit/${doc._id}`}
+          className="w-full"
+        >
+          <button className="btn-submit w-full">Edit</button>
         </Link>
       </div>
     </div>
