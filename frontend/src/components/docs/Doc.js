@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PdfLinks from "./PdfLinks";
 import { formPrice, localeDate } from "../../lib/helpers";
 import { Link } from "react-router-dom";
 import VersionSelector from "./VersionSelector";
 
 const Doc = ({ doc }) => {
-  const [selectedVersionIndex, setSelectedVersionIndex] = useState(
-    doc.versions.length ? doc.versions.length - 1 : 0
-  );
+  const [selectedVersionIndex, setSelectedVersionIndex] = useState(undefined);
 
-  const selectedVersion = doc.versions[selectedVersionIndex] || {};
+  useEffect(() => {
+    if (doc?.versions?.length) {
+      setSelectedVersionIndex(doc.versions.length - 1);
+    }
+  }, [doc]);
+
+  if (!doc?.versions?.length) {
+    return <div>Versiyon bulunamadı.</div>;
+  }
+
+  const selectedVersion =
+    typeof selectedVersionIndex === "number" &&
+    doc?.versions?.[selectedVersionIndex]
+      ? doc.versions[selectedVersionIndex]
+      : null;
+
+  if (!selectedVersion) return <div>Versiyon bulunamadı.</div>;
+
   const docFields = [
     { label: "Müşteri", value: selectedVersion.customer },
     { label: "Yetkili", value: selectedVersion.person },
@@ -18,8 +33,8 @@ const Doc = ({ doc }) => {
     { label: "Email", value: selectedVersion.email },
     { label: "Vergi Dairesi", value: selectedVersion.vd },
     { label: "Vergi No", value: selectedVersion.vatNo },
-    { label: "Oluşturan", value: doc.user?.displayName },
-    { label: "Versiyon", value: doc.version },
+    { label: "Oluşturan", value: doc?.user?.displayName },
+    { label: "Versiyon", value: selectedVersion.version },
     { label: "Ödeme Şekli", value: selectedVersion.paymentTerms },
     { label: "Teslim süresi", value: selectedVersion.deliveryDate },
     { label: "Teslim Yeri", value: selectedVersion.deliveryTerms },
@@ -28,7 +43,9 @@ const Doc = ({ doc }) => {
   ];
 
   const handleVersionChange = (index) => {
-    setSelectedVersionIndex(index);
+    if (!isNaN(index) && index >= 0 && index < doc.versions.length) {
+      setSelectedVersionIndex(index);
+    }
   };
 
   return (
@@ -55,13 +72,17 @@ const Doc = ({ doc }) => {
             </button>
           </Link>
 
-          <PdfLinks doc={doc} version={selectedVersion} />
+          <PdfLinks
+            doc={doc}
+            version={selectedVersion}
+            versionNumber={selectedVersion.version}
+          />
 
           {/* Version Selector */}
         </div>
         <VersionSelector
           versions={doc.versions}
-          selectedIndex={selectedVersionIndex}
+          selectedIndex={selectedVersionIndex ?? 0} // fallback 0
           onChange={handleVersionChange}
         />
       </div>
@@ -81,7 +102,7 @@ const Doc = ({ doc }) => {
       </div>
 
       <div className="mx-2">
-        {selectedVersion.lineItems?.map((item, i) => (
+        {selectedVersion?.lineItems?.map((item, i) => (
           <div key={item._id || i}>
             <div className="border grid grid-flow-row grid-cols-4 grid-rows-4 text-sm items-center gap-1 my-2 px-2">
               <div className="border col-span-4 self-end">{item.desc}</div>

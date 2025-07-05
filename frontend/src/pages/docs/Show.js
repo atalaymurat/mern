@@ -1,38 +1,38 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import IsLoading from '../../components/home/IsLoading'
-import Doc from '../../components/docs/Doc'
-import { useParams } from 'react-router-dom'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import IsLoading from "../../components/home/IsLoading";
+import Doc from "../../components/docs/Doc";
+import { useParams } from "react-router-dom";
 
 const Show = () => {
-    const [doc, setDoc] = useState(null)
-    const { id } = useParams()
-    const [isLoading, setIsloading] = useState(true)
+  const [doc, setDoc] = useState(null);
+  const [error, setError] = useState(null);
+  const { id } = useParams();
+  const [isLoading, setIsloading] = useState(true);
 
-    useEffect(() => {
-        try {
-            const getData = async () => {
-                const { data } = await axios.get(`/doc/${id}`, {
-                    withCredentials: true,
-                })
-                setDoc(data.doc)
-                setIsloading(false)
-            }
-            getData()
-        } catch (err) {
-            setIsloading(false)
-        }
-    }, [id])
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(`/doc/${id}`, {
+          withCredentials: true,
+        });
+        setDoc(data.doc);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setError("Veri yüklenirken hata oluştu");
+      } finally {
+        setIsloading(false);
+      }
+    };
+    getData();
+  }, [id]);
 
-    if (isLoading) {
-        return <IsLoading />
-    }
+  if (isLoading) {
+    return <IsLoading />;
+  }
+  if (error) return <div className="text-red-600">{error}</div>;
 
-    return (
-      <>
-      < Doc doc={doc}/>
-      </>
-    )
-}
+  return <Doc doc={doc} />;
+};
 
-export default Show
+export default Show;

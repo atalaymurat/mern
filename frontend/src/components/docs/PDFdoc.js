@@ -34,9 +34,19 @@ const capitalize = (str) =>
         .join("\n")
     : "";
 
-const PDFdoc = ({ doc, version }) => {
+const PDFdoc = ({ doc, versionNumber }) => {
   if (!doc) return null;
-  const selectedVersion = doc.versions[Number(version) - 1]
+
+  let selectedVersion;
+
+  if (versionNumber && Array.isArray(doc.versions) && doc.versions.length > 0) {
+    selectedVersion = doc.versions.find((v) => v.version === versionNumber);
+  }
+
+  if (!selectedVersion) {
+    selectedVersion = doc.versions[doc.versions.length - 1]; // fallback son versiyon
+  }
+
   const { docType } = doc;
 
   return (

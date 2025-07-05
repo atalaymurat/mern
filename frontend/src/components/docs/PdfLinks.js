@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { BlobProvider } from "@react-pdf/renderer";
 import PDFdoc from "../../components/docs/PDFdoc";
+import { Link } from "react-router-dom";
 
-function PdfLinks({ doc, version }) {
+function PdfLinks({ doc, version, versionNumber }) {
   const fileName = `${doc.docCode}_${doc.docType}_${
     version?.customer?.replace(/\s/g, "") || "XXX"
   }`;
@@ -11,7 +11,8 @@ function PdfLinks({ doc, version }) {
     <div className="flex flex-col w-full">
       <div className="flex flex-row gap-2 mb-4 w-full">
         <BlobProvider
-          document={<PDFdoc doc={doc} version={version?.version} />}
+          key={`pdf-${versionNumber}`} // << Bu en önemli satır
+          document={<PDFdoc doc={doc} versionNumber={versionNumber} />}
         >
           {({ blob, url, loading, error }) =>
             loading ? (
@@ -31,14 +32,16 @@ function PdfLinks({ doc, version }) {
             )
           }
         </BlobProvider>
+
         <Link
-          to={`/doc/pdf/${doc._id}?v=${version?.version}`}
+          to={`/doc/pdf/${doc._id}?v=${versionNumber}`}
           target="_blank"
           className="w-full"
           rel="noopener noreferrer"
         >
           <button className="btn-purple w-full">PDF Göster</button>
         </Link>
+
         <Link to={`/doc/edit/${doc._id}`} className="w-full">
           <button className="btn-submit w-full">Edit</button>
         </Link>

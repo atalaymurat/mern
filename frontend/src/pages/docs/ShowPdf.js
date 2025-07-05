@@ -27,7 +27,7 @@ const ShowPdf = () => {
   return (
     <div>
       <PDFViewer className="w-full min-h-screen">
-        <PDFdoc doc={doc} version={versionNumber} />
+        <PDFdoc doc={doc} versionNumber={versionNumber} />
       </PDFViewer>
     </div>
   )

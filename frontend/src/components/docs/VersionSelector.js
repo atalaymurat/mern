@@ -7,7 +7,7 @@ const VersionSelector = ({ versions = [], selectedIndex = 0, onChange }) => {
       <label className="text-sm font-medium">Versiyon</label>
       <select
         className="border px-2 py-1 text-sm rounded"
-        value={selectedIndex}
+        value={typeof selectedIndex === "number" ? selectedIndex : ""}
         onChange={(e) => onChange(Number(e.target.value))}
       >
         {versions.map((v, index) => (
