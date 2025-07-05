@@ -26,6 +26,17 @@ const DocForm = ({ user, docType, doc }) => {
         user: user?._id,
       }
     : null;
+  const EMPTY_LINE_ITEM = {
+    position: 0,
+    condition: "",
+    origin: "",
+    gtipNo: "",
+    desc: "",
+    caption: "",
+    quantity: "",
+    price: "",
+    totalPrice: 0,
+  };
 
   const INITIAL_VALUES = editMode
     ? EDIT_VALUES
@@ -77,12 +88,16 @@ const DocForm = ({ user, docType, doc }) => {
           <button
             type="button"
             className="btn-submit"
-            onClick={() =>
+            onClick={() => {
+              const maxPosition = Math.max(
+                0,
+                ...values.lineItems.map((item) => item.position || 0)
+              );
               push({
-                ...INITIAL_VALUES.lineItems[0],
-                position: i + 2,
-              })
-            }
+                ...EMPTY_LINE_ITEM,
+                position: maxPosition + 1,
+              });
+            }}
           >
             Ekle
           </button>
