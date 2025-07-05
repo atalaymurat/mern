@@ -4,8 +4,10 @@
   "private": true,
   "homepage": "https://app-amn2.onrender.com/",
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@react-pdf/renderer": "^4.3.0",
     "axios": "^1.7.9",
+    "buffer": "^6.0.3",
     "cra-template": "1.2.0",
     "formik": "^2.4.6",
     "react": "^19.0.0",
@@ -17,10 +19,10 @@
     "yup": "^1.6.1"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
-    "dev": "PORT=3001 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "PORT=3001 craco start",
+    "dev": "PORT=3001 craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
