@@ -87,7 +87,7 @@ function Home() {
                         </Link>
                         <Link className="w-1/2" to="/doc/new/sip">
                             <button className="btn-purple my-2 w-full">
-                                Siparis Formu Oluştur
+                                Satin Alma Formu Oluştur
                             </button>
                         </Link>
                     </div>

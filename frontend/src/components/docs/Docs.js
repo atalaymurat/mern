@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import IsLoading from "../home/IsLoading";
 import { Link } from "react-router-dom";
-import { formPrice, localeDate } from "../../lib/helpers";
+import { formPrice, localeDate, capitalize } from "../../lib/helpers";
 import { EditIcon, DeleteIcon } from "./Icons";
 
 function Docs() {
@@ -75,10 +75,10 @@ function Docs() {
               </Link>
               <div className="text-sm px-1 col-span-2">
                 <div className="font-semibold">
-                  {lastVersion.customer.slice(0, 29)}
+                  {capitalize(lastVersion.customer.slice(0, 29))}
                 </div>
                 <div className="text-xs">
-                  {lastVersion.address.slice(0, 39)}
+                  {capitalize(lastVersion.address.slice(0, 39))}
                 </div>
               </div>
               <div className="px-1">
