@@ -14,7 +14,7 @@ const Header = () => {
           }}
         />
         <div className="text-sm text-center font-semibold text-gray-600 pr-4">
-          Ufuk Varol
+          erp
         </div>
       </div>
     </div>
