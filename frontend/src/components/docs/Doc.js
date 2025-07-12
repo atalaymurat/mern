@@ -65,7 +65,7 @@ const Doc = ({ doc }) => {
     },
     {
       label: "Toplam Fiyat",
-      value: `${formPrice(selectedVersion.totalPrice)} ${
+      value: `${formPrice(selectedVersion.grandTotal)} ${
         selectedVersion.currency
       }`,
     },
@@ -92,6 +92,9 @@ const Doc = ({ doc }) => {
       </div>
 
       <DocTable docFields={docFields} selectedVersion={selectedVersion} />
+      <pre>
+        {JSON.stringify(doc,null, 2)}
+      </pre>
     </div>
   );
 };

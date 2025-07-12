@@ -52,7 +52,7 @@ const PDFdoc = ({ doc, versionNumber }) => {
   return (
     <Document author="varol" producer="varol" creator="varol">
       <Page size="A4" dpi="72" style={styles.page}>
-        <View style={{ margin: "10px 20px" }}>
+        <View style={{ margin: "15px 20px" }}>
           <Header doc={doc} version={selectedVersion} />
           <Customer doc={selectedVersion} />
           <PriceTable doc={selectedVersion} />
@@ -165,7 +165,7 @@ const Header = ({ doc, version }) => {
     TEK: "Fiyat Teklifi",
     PRO: "Proforma Fatura",
     SOZ: "Satış Sözleşmesi",
-    SIP: "Sipariş Formu",
+    SIP: "Satın Alma Formu",
   };
   return (
     <View style={styles.container}>
@@ -229,7 +229,7 @@ const Header = ({ doc, version }) => {
         </View>
         <View style={{ ...styles.flexRow }}>
           <Text style={{ width: "100%", padding: "2px 0px", color: "grey" }}>
-            www.ufukmakina.com
+
           </Text>
         </View>
       </View>
@@ -256,7 +256,7 @@ const PriceTable = ({ doc }) => {
             border: "1px solid black",
           }}
         >
-          <Text style={{ flexBasis: "5%", ...styles.head }}>Kod</Text>
+          <Text style={{ flexBasis: "5%", ...styles.head }}>No</Text>
           <Text style={{ flexBasis: "62%", ...styles.head }}>Açıklama</Text>
           <Text style={{ flexBasis: "5%", ...styles.head }}>Ad.</Text>
           <Text style={{ flexBasis: "14%", ...styles.head }}>Birim Fiyat</Text>
@@ -287,7 +287,7 @@ const PriceTable = ({ doc }) => {
                 textAlign: "center",
               }}
             >
-              {item.position}
+              {String(item.position).padStart(2, "0")}
             </Text>
             <View
               style={{
@@ -301,44 +301,64 @@ const PriceTable = ({ doc }) => {
               <Text style={{ fontWeight: "bold" }}>
                 {item.desc.toUpperCase()}
               </Text>
-              <Text style={{ color: "grey" }}>{capitalize(item.caption)}</Text>
-              <View style={{ ...styles.flexRow }}>
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    color: "grey",
-                  }}
-                >
-                  Menşei
+              {item.caption && (
+                <Text style={{ color: "grey" }}>
+                  {capitalize(item.caption)}
                 </Text>
-                <Text style={{}}>{item.origin}</Text>
-              </View>
-              <View style={{ ...styles.flexRow }}>
+              )}
+              {item.origin && (
                 <View style={{ ...styles.flexRow }}>
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      color: "grey",
-                    }}
-                  >
-                    GTİP No
-                  </Text>
-                  <Text>{item.gtipNo}</Text>
+                  <>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        color: "grey",
+                      }}
+                    >
+                      Menşei
+                    </Text>
+                    <Text style={{}}>{item.origin}</Text>
+                  </>
                 </View>
-                <View style={{ ...styles.flexRow }}>
-                  <Text
-                    style={{
-                      marginLeft: "20px",
-                      fontWeight: "bold",
-                      color: "grey",
-                    }}
-                  >
-                    Durumu
-                  </Text>
-                  <Text>{item.condition}</Text>
+              )}
+
+              {/* GTIP No ve Durumu aynı satırda, arada 20px boşluk */}
+              {(item.gtipNo || item.condition) && (
+                <View style={{ ...styles.flexRow, marginBottom: 2 }}>
+                  {item.gtipNo && (
+                    <View style={{ flexDirection: "row", marginRight: 20 }}>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          color: "grey",
+                          marginRight: 4,
+                        }}
+                      >
+                        GTİP
+                      </Text>
+                      <Text>{item.gtipNo}</Text>
+                    </View>
+                  )}
+
+                  {item.condition && (
+                    <View style={{ flexDirection: "row" }}>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          color: "grey",
+                          marginRight: 4,
+                        }}
+                      >
+                        Durumu
+                      </Text>
+                      <Text>{item.condition}</Text>
+                    </View>
+                  )}
                 </View>
-              </View>
+              )}
+              {/* GTIP No ve Durumu aynı satırda, arada 20px boşluk */}
             </View>
+
             <Text
               style={{
                 flexBasis: "5%",
@@ -461,12 +481,12 @@ const TotalsTable = ({ doc }) => {
 };
 
 const BankInfo = ({ doc }) => (
-  <View style={{ border: "1px solid black", flexGrow: "1", margin: "4px 0px" }}>
+  <View style={{ flexGrow: "1", margin: "4px 0px" }}>
     <Text
       style={{
         padding: "2px 4px",
         color: "#162a42",
-        borderBottom: "1px solid black",
+        borderBottom: "1px solid gray",
         fontWeight: "bold",
       }}
     >
