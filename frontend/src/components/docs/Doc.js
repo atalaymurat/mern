@@ -92,9 +92,6 @@ const Doc = ({ doc }) => {
       </div>
 
       <DocTable docFields={docFields} selectedVersion={selectedVersion} />
-      <pre>
-        {JSON.stringify(doc,null, 2)}
-      </pre>
     </div>
   );
 };

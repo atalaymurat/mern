@@ -494,11 +494,11 @@ const BankInfo = ({ doc }) => (
     </Text>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>SATICI FİRMA</Text>
-      <Text>VAROL MAKİNA SAN. ve TİC. LTD. ŞTİ.</Text>
+      <Text>VAROL TEKNİK MAKİNE SANAYİ ve TİCARET LTD. ŞTİ.</Text>
     </View>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>ADRES</Text>
-      <Text>Altınşehir Mah.Nato yolu Cad. No:74 Ümraniye/İSTANBUL</Text>
+      <Text>Şerifali Mah. Turgut Özal Bulvarı, Royal Plaza B Blok No:120/A Ümraniye/İSTANBUL</Text>
     </View>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>BANKA</Text>
