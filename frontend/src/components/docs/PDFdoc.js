@@ -228,9 +228,9 @@ const Header = ({ doc, version }) => {
           </Text>
         </View>
         <View style={{ ...styles.flexRow }}>
-          <Text style={{ width: "100%", padding: "2px 0px", color: "grey" }}>
-
-          </Text>
+          <Text
+            style={{ width: "100%", padding: "2px 0px", color: "grey" }}
+          ></Text>
         </View>
       </View>
     </View>
@@ -498,7 +498,10 @@ const BankInfo = ({ doc }) => (
     </View>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>ADRES</Text>
-      <Text>Şerifali Mah. Turgut Özal Bulvarı, Royal Plaza B Blok No:120/A Ümraniye/İSTANBUL</Text>
+      <Text>
+        Şerifali Mah. Turgut Özal Bulvarı, Royal Plaza B Blok No:120/A
+        Ümraniye/İSTANBUL
+      </Text>
     </View>
     <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
       <Text style={{ flexBasis: "20%", ...styles.label }}>BANKA</Text>
@@ -521,16 +524,28 @@ const BankInfo = ({ doc }) => (
       </View>
     )}
     {doc.currency === "EUR" && (
-      <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
-        <Text style={{ flexBasis: "20%", ...styles.label }}>EURO IBAN</Text>
-        <Text>TR83 0001 0008 4597 5960 3550 07</Text>
-      </View>
+      <>
+        <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
+          <Text style={{ flexBasis: "20%", ...styles.label }}>TL IBAN</Text>
+          <Text>TR40 0001 0008 4597 5960 3550 05</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
+          <Text style={{ flexBasis: "20%", ...styles.label }}>EURO IBAN</Text>
+          <Text>TR83 0001 0008 4597 5960 3550 07</Text>
+        </View>
+      </>
     )}
     {doc.currency === "USD" && (
-      <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
-        <Text style={{ flexBasis: "20%", ...styles.label }}>USD IBAN</Text>
-        <Text>TR13 0001 0008 4597 5960 3550 06</Text>
-      </View>
+      <>
+        <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
+          <Text style={{ flexBasis: "20%", ...styles.label }}>TL IBAN</Text>
+          <Text>TR40 0001 0008 4597 5960 3550 05</Text>
+        </View>
+        <View style={{ ...styles.flexRow, padding: "2px 4px" }}>
+          <Text style={{ flexBasis: "20%", ...styles.label }}>USD IBAN</Text>
+          <Text>TR13 0001 0008 4597 5960 3550 06</Text>
+        </View>
+      </>
     )}
   </View>
 );
