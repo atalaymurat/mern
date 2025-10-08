@@ -174,7 +174,7 @@ const Header = ({ doc, version }) => {
           src={logoBase64}
           cache={false}
           style={{
-            height: "80",
+            height: "auto",
             width: "auto",
           }}
         />
