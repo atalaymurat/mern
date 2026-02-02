@@ -68,6 +68,23 @@ const documentSchema = new Schema(
   }
 );
 
+documentVersionSchema.pre("save", function (next) {
+  // docDate yoksa oluştur
+  if (!this.docDate) {
+    this.docDate = new Date();
+  }
+
+  // validDate yoksa → docDate + 1 ay
+  if (!this.validDate) {
+    const valid = new Date(this.docDate);
+    valid.setMonth(valid.getMonth() + 1);
+    this.validDate = valid;
+  }
+
+  next();
+});
+
+
 documentSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
   try {
     await DocumentVersion.deleteMany({ document: this._id });
