@@ -49,6 +49,7 @@ app.use('/companies', require('./routes/companies'))
 app.use('/user', require('./routes/users'))
 app.use('/auth', require('./routes/auth'))
 app.use('/doc', require('./routes/documents'))
+app.use('/search', require('./routes/search'))
 
 // Route Handlers
 // 404 catch all handler
