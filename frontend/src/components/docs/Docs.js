@@ -50,7 +50,7 @@ function Docs() {
 
   return (
     <>
-      <div className="mx-2 my-4 lg:w-4/6 w-full mx-auto flex flex-col overflow-hidden">
+      <div className="mx-2 px-2 my-4 lg:w-4/6 w-full mx-auto flex flex-col overflow-hidden">
         <div className="flex flex-row">
           <Link to="/">
             <button className="btn-link">
@@ -65,9 +65,11 @@ function Docs() {
               </svg>
             </button>
           </Link>
+        </div>
+        <div className="flex my-2">
           <DocSearchBar value={search} onChange={setSearch} />
         </div>
-        <div className="font-semibold text-xl my-4 px-2">Belgeler</div>
+        <div className="font-semibold text-xl mb-2 px-2">Belgeler</div>
 
         <div className="grid grid-cols-4 bg-black text-white font-bold mb-1">
           <div className="border-x px-1">Kod</div>

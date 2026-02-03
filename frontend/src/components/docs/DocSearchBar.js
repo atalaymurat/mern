@@ -1,6 +1,6 @@
 function DocSearchBar({ value, onChange }) {
   return (
-    <div className="px-2 mx-2">
+    <div className="my-2 w-full">
       <input
         type="text"
         placeholder="ara..."
