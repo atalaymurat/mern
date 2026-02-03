@@ -4,10 +4,13 @@ import IsLoading from "../home/IsLoading";
 import { Link } from "react-router-dom";
 import { formPrice, localeDate, capitalize } from "../../lib/helpers";
 import { EditIcon, DeleteIcon } from "./Icons";
+import DocSearchBar from "./DocSearchBar";
 
 function Docs() {
   const [documents, setDocuments] = useState([]);
-  const [isLoading, setIsloading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [reFreshTrigger, setReFreshTrigger] = useState(false);
   const handleDelete = async (id) => {
     if (window.confirm("Kaydı Silmek Üzeresiniz, onaylıyormusunuz ?")) {
@@ -15,18 +18,35 @@ function Docs() {
       setReFreshTrigger((prev) => !prev);
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get("/doc", { withCredentials: true });
-      setDocuments(data.doc);
-      setIsloading(false);
-    };
-    getData();
-  }, [reFreshTrigger]);
+      setIsLoading(true);
 
-  if (isLoading) {
-    return <IsLoading />;
-  }
+      const url =
+        debouncedSearch && debouncedSearch.trim().length > 1
+          ? "/search"
+          : "/doc";
+
+      const { data } = await axios.get(url, {
+        params: url === "/search" ? { q: debouncedSearch } : {},
+        withCredentials: true,
+      });
+
+      setDocuments(data.doc);
+      setIsLoading(false);
+    };
+
+    getData();
+  }, [debouncedSearch, reFreshTrigger]);
 
   return (
     <>
@@ -45,6 +65,7 @@ function Docs() {
               </svg>
             </button>
           </Link>
+          <DocSearchBar value={search} onChange={setSearch} />
         </div>
         <div className="font-semibold text-xl my-4 px-2">Belgeler</div>
 
