@@ -1,58 +1,152 @@
 import { StyleSheet } from "@react-pdf/renderer";
 
 export const styles = StyleSheet.create({
+  /* ================= PAGE ================= */
+
   page: {
     fontFamily: "Ubuntu",
-    width: "100%",
     fontSize: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 25,
   },
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "top",
-    margin: "5px 2px",
-  },
-  flexCol: {
-    width: "100%",
+
+  /* ================= GENERIC LAYOUT ================= */
+
+  section: {
     flexDirection: "column",
-    margin: "0px 1px",
+    width: "100%",
+    marginBottom: 10,
   },
-  flexRow: {
+
+  row: {
     flexDirection: "row",
-    gap: "3px",
-    padding: "0px 0px",
+    width: "100%",
   },
-  fullWidthRow: {
+
+  column: {
+    flexDirection: "column",
+  },
+
+  spaceBetween: {
     flexDirection: "row",
-    marginBottom: 2,
+    justifyContent: "space-between",
+    alignItems: "flex-start",
   },
+
+  alignCenter: {
+    alignItems: "center",
+  },
+
+  alignRight: {
+    alignItems: "flex-end",
+  },
+
+  /* ================= TYPOGRAPHY ================= */
+
   heading: {
+    fontSize: 13,
     fontWeight: "bold",
-    fontSize: 12,
-    textDecoration: "underline",
-    flexBasis: "50%",
     textAlign: "center",
+    marginBottom: 6,
   },
+
   label: {
     fontWeight: "bold",
-    color: "grey",
+    color: "#555",
+    marginRight: 4,
   },
-  item: {
-    flexGrow: 0,
+
+  small: {
+    fontSize: 9,
   },
-  head: {
-    backgroundColor: "#162a42",
+
+  bold: {
     fontWeight: "bold",
-    color: "white",
-    fontSize: 9,
-    textAlign: "center",
-    alignSelf: "center",
-    padding: "5px 0px",
-    borderRight: "1px solid black",
   },
-  cell: {
+
+  /* ================= TABLE ================= */
+
+  table: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#000",
+    borderStyle: "solid",
+  },
+
+  tableHeader: {
+    flexDirection: "row",
+    backgroundColor: "#162a42",
+    color: "#fff",
     fontSize: 9,
-    borderRight: "1px solid black",
-    padding: "4px 4px",
+  },
+
+  th: {
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    borderRightWidth: 1,
+    borderRightColor: "#000",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+
+  td: {
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    borderRightWidth: 1,
+    borderRightColor: "#000",
+    fontSize: 9,
+  },
+
+  tdRight: {
+    textAlign: "right",
+  },
+
+  tdCenter: {
+    textAlign: "center",
+  },
+
+  tableRow: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderTopColor: "#000",
+  },
+
+  /* ================= TOTALS ================= */
+
+  totalsWrapper: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+
+  totalsBox: {
+    width: "35%",
+    borderWidth: 1,
+    borderColor: "#000",
+  },
+
+  totalsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+
+  totalsGrand: {
+    fontWeight: "bold",
+  },
+
+  /* ================= BANK INFO ================= */
+
+  bankSection: {
+    marginTop: 15,
+  },
+
+  bankRow: {
+    flexDirection: "row",
+    marginBottom: 3,
   },
 });
