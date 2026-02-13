@@ -19,7 +19,7 @@ module.exports = {
           iss: "apiSalesman",
           sub: user._id,
           iat: Math.floor(Date.now() / 1000), // Issued at (in seconds)
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // Expires in 1 hour
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 6, // Expires in 6 hour
           company: user.company, // 💥 EKLENDİ
           group: user.group, // 💥 EKLENDİ
         },
@@ -35,7 +35,7 @@ module.exports = {
         secure: isProduction, // Only send over HTTPS in production
         sameSite: isProduction ? "none" : "lax", // Allow cross-site cookies
         path: "/", // Ensure the cookie is accessible across all routes
-        maxAge: 1000 * 60 * 60, // 1 hour in milliseconds 1000
+        maxAge: 1000 * 60 * 60 * 6, // 6 hour in milliseconds 1000
       });
 
       // Exclude `password` and `email_verified` from the `user` object
