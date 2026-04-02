@@ -20,7 +20,7 @@ const Header = ({ doc, version }) => {
             <Image
               src={logoBase64}
               style={{
-                width: 300,
+                width: 150,
                 objectFit: "contain",
               }}
             />
