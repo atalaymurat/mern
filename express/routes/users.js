@@ -7,7 +7,7 @@ const passportJWT = passport.authenticate('jwt', { session: false })
 
 router
   .get('/',passportJWT, userController.index)
-  .post('/',passportJWT, userController.create)
+  .post('/', userController.create)
   
 
 module.exports = router

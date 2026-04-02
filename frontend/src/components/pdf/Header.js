@@ -16,18 +16,11 @@ const Header = ({ doc, version }) => {
       <View style={styles.spaceBetween}>
         {/* LEFT - LOGO */}
         <View style={{ width: "25%" }}>
-          <View
-            style={{
-              width: 120,
-              height: 96,
-              justifyContent: "center",
-            }}
-          >
+          <View>
             <Image
               src={logoBase64}
               style={{
-                width: "100%",
-                height: "100%",
+                width: 300,
                 objectFit: "contain",
               }}
             />

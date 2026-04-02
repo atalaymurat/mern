@@ -1,27 +1,27 @@
 import { Document, Page, Text, View, Font, Image } from "@react-pdf/renderer";
+import { firmaAdi , adres, bankaAdi, swiftNo, tlIban, usdIban, eurIban, subeKodu } from '../../lib/firmConfig'
 
 const BankInfo = ({ doc }) => {
   const rows = [
     {
       label: "SATICI FİRMA",
-      value: "VAROL TEKNİK MAKİNE SANAYİ ve TİCARET LTD. ŞTİ.",
+      value: firmaAdi,
     },
     {
       label: "ADRES",
-      value:
-        "Şerifali Mah. Turgut Özal Bulvarı, Royal Plaza B Blok No:120/A Ümraniye/İSTANBUL",
+      value: adres,
     },
     {
       label: "BANKA",
-      value: "T.C. ZİRAAT BANKASI A.Ş",
+      value: bankaAdi,
     },
     {
-      label: "ŞUBE / ŞUBE KODU",
-      value: "0845-RAMİ/İSTANBUL ŞUBESİ",
+      label: "ŞUBE",
+      value: subeKodu,
     },
     {
       label: "SWIFT NO",
-      value: "TCZBTR2A",
+      value: swiftNo,
     },
   ];
 
@@ -30,7 +30,7 @@ const BankInfo = ({ doc }) => {
   if (doc.currency === "TL") {
     ibanRows.push({
       label: "TL IBAN",
-      value: "TR40 0001 0008 4597 5960 3550 05",
+      value: tlIban,
     });
   }
 
@@ -38,11 +38,11 @@ const BankInfo = ({ doc }) => {
     ibanRows.push(
       {
         label: "TL IBAN",
-        value: "TR40 0001 0008 4597 5960 3550 05",
+        value: tlIban,
       },
       {
         label: "EURO IBAN",
-        value: "TR83 0001 0008 4597 5960 3550 07",
+        value: eurIban,
       }
     );
   }
@@ -51,11 +51,11 @@ const BankInfo = ({ doc }) => {
     ibanRows.push(
       {
         label: "TL IBAN",
-        value: "TR40 0001 0008 4597 5960 3550 05",
+        value: tlIban,
       },
       {
         label: "USD IBAN",
-        value: "TR13 0001 0008 4597 5960 3550 06",
+        value: usdIban,
       }
     );
   }
@@ -85,7 +85,7 @@ const BankInfo = ({ doc }) => {
     <View
       wrap={false} // Komple bölünmesin
       style={{
-        marginTop: 20,
+        marginTop: 3,
       }}
     >
       <Text

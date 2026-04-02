@@ -1,52 +1,38 @@
-
-
-
 import { Document, Page, Text, View, Font, Image } from "@react-pdf/renderer";
 import { styles } from "../docs/Styles";
 import { capitalize } from "./Capitalize";
-
+import { TERMS_CONFIG } from "../../lib/termsConfig";
 
 const Terms = ({ doc }) => {
   const fieldValues = [
     {
-      title: "TESLİM SÜRESİ",
+      title: TERMS_CONFIG.TITLES.DELIVERY_TIME,
       content: capitalize(doc.deliveryDate),
-      footer:
-        "Sipariş Avansının Tamamının Alınmasından Sonra Geçerli Olmak Üzere",
+      footer: TERMS_CONFIG.FOOTERS.DELIVERY_TIME,
     },
     {
-      title: "TESLİM YERİ",
+      title: TERMS_CONFIG.TITLES.DELIVERY_PLACE,
       content: capitalize(doc.deliveryTerms),
     },
     {
-      title: "GARANTİ",
+      title: TERMS_CONFIG.TITLES.WARRANTY,
       content: capitalize(doc.warranty),
-      footer:
-        "Sarf malzemeleri garanti kapsamında değerlendirilmez. Şebeke Elektrik Sorunları Kaynaklı Elektriksel Arızalar Garanti Kapsamı Dışındadır.",
+      footer: TERMS_CONFIG.FOOTERS.WARRANTY,
     },
     {
-      title: "ÖDEME ŞEKLİ",
+      title: TERMS_CONFIG.TITLES.PAYMENT,
       content: capitalize(doc.paymentTerms),
     },
   ];
 
   const explanation = {
-    title: "AÇIKLAMALAR",
+    title: TERMS_CONFIG.TITLES.EXPLANATION,
     content: capitalize(doc.extraLine),
-    footer: `- Özellikle belirtilmedikçe fiyatlarımıza KDV dahil değildir.
-- Seri Numaralar faturada belirtilecektir.
-- CE belgesine haizdir.
-- G.T.I.P kod uyuşmazlıklarından satıcı sorumlu tutulamaz.
-- Mücbir nedenler veya üretici kaynaklı gecikmelerden satıcı sorumlu değildir.
-- Makinenin çalışması için zorunlu olan parça ve aksesuarlar dışında ilave parça ve aksesuar bulunmamaktadır.`,
-    extra: doc.isNewSign
-      ? "Makineler Yeni ve Kullanılmamıştır."
-      : "",
+    footer: TERMS_CONFIG.FOOTERS.EXPLANATION,
+    extra: doc.isNewSign ? TERMS_CONFIG.EXTRA.NEW_MACHINE : "",
   };
 
-  const nonEmptyFields = fieldValues.filter((item) =>
-    item.content?.trim()
-  );
+  const nonEmptyFields = fieldValues.filter((item) => item.content?.trim());
 
   const renderFieldRows = () => {
     const rows = [];
@@ -70,10 +56,7 @@ const Terms = ({ doc }) => {
               key={`item-${i}-${idx}`}
               style={{
                 padding: 6,
-                width:
-                  rowItems.length === 1
-                    ? "100%"
-                    : "50%",
+                width: rowItems.length === 1 ? "100%" : "50%",
               }}
             >
               <Text style={{ fontWeight: "bold", marginBottom: 2 }}>
@@ -95,7 +78,7 @@ const Terms = ({ doc }) => {
               )}
             </View>
           ))}
-        </View>
+        </View>,
       );
     }
 
@@ -104,8 +87,7 @@ const Terms = ({ doc }) => {
 
   const renderExplanation = () => {
     const { title, content, footer, extra } = explanation;
-    const hasAny =
-      content?.trim() || footer?.trim() || extra;
+    const hasAny = content?.trim() || footer?.trim() || extra;
 
     if (!hasAny) return null;
 
@@ -114,29 +96,21 @@ const Terms = ({ doc }) => {
         style={{
           width: "100%",
           padding: 6,
-          marginTop: 6,
+          marginTop: 2,
         }}
       >
         <Text
           style={{
             fontWeight: "bold",
-            marginBottom: 4,
+            marginBottom: 2,
           }}
         >
           {title}
         </Text>
 
-        {content && (
-          <Text style={{ marginBottom: 3 }}>
-            {content}
-          </Text>
-        )}
+        {content && <Text style={{ marginBottom: 3 }}>{content}</Text>}
 
-        {extra && (
-          <Text style={{ marginBottom: 3 }}>
-            {extra}
-          </Text>
-        )}
+        {extra && <Text style={{ marginBottom: 3 }}>{extra}</Text>}
 
         {footer && (
           <Text
@@ -156,7 +130,7 @@ const Terms = ({ doc }) => {
   return (
     <View
       style={{
-        marginTop: 10,
+        marginTop: 4,
       }}
     >
       <Text
